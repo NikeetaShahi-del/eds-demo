@@ -10,32 +10,39 @@
  * governing permissions and limitations under the License.
  */
 
+/* Google Fonts - Source Sans Pro + Asar */
+@import url('https://fonts.googleapis.com/css2?family=Asar&family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+
+/* WKND Design Tokens - extracted from https://wknd.site/us/en.html */
 :root {
   /* colors */
-  --background-color: white;
+  --background-color: #fff;
   --light-color: #f8f8f8;
-  --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
-  --overlay-background-color:lightgrey;
+  --dark-color: #202020;
+  --text-color: #202020;
+  --link-color: #202020;
+  --link-hover-color: #000;
+  --accent-color: #ffea00;
+  --overlay-background-color: #ebebeb;
+  --footer-background-color: #202020;
+  --footer-text-color: #ebebeb;
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --body-font-family: "Source Sans Pro", "Helvetica Neue", helvetica, arial, sans-serif;
+  --heading-font-family: asar, georgia, "Times New Roman", times, serif;
 
   /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
+  --body-font-size-m: 18px;
+  --body-font-size-s: 16px;
+  --body-font-size-xs: 14px;
 
   /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
+  --heading-font-size-xxl: 48px;
+  --heading-font-size-xl: 36px;
+  --heading-font-size-l: 28px;
+  --heading-font-size-m: 22px;
+  --heading-font-size-s: 20px;
+  --heading-font-size-xs: 18px;
 
   /* nav heights */
   --nav-height: 64px;
@@ -45,32 +52,15 @@
 
 /* fallback fonts */
 @font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
-  src: local('Arial');
+  font-family: asar-fallback;
+  size-adjust: 105%;
+  src: local('Georgia');
 }
 
 @font-face {
-  font-family: roboto-fallback;
-  size-adjust: 99.529%;
+  font-family: source-sans-pro-fallback;
+  size-adjust: 99%;
   src: local('Arial');
-}
-
-@media (width >= 900px) {
-  :root {
-    /* body sizes */
-    --body-font-size-m: 18px;
-    --body-font-size-s: 16px;
-    --body-font-size-xs: 14px;
-
-    /* heading sizes */
-    --heading-font-size-xxl: 45px;
-    --heading-font-size-xl: 36px;
-    --heading-font-size-l: 28px;
-    --heading-font-size-m: 22px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
-  }
 }
 
 body {
@@ -80,7 +70,7 @@ body {
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
-  line-height: 1.6;
+  line-height: 1.75;
 }
 
 body.appear {
@@ -116,8 +106,8 @@ h6 {
   margin-top: 0.8em;
   margin-bottom: 0.25em;
   font-family: var(--heading-font-family);
-  font-weight: 600;
-  line-height: 1.25;
+  font-weight: 400;
+  line-height: 1.5;
   scroll-margin: 40px;
 }
 
@@ -167,14 +157,19 @@ a:any-link {
   color: var(--link-color);
   text-decoration: none;
   overflow-wrap: break-word;
+  transition: color 0.2s ease;
 }
 
 a:hover {
-  color: var(--link-hover-color);
   text-decoration: underline;
 }
 
-/* buttons */
+a:focus-visible {
+  outline: 2px solid var(--text-color);
+  outline-offset: 2px;
+}
+
+/* buttons - WKND yellow CTA style */
 a.button:any-link,
 button {
   box-sizing: border-box;
@@ -182,16 +177,18 @@ button {
   max-width: 100%;
   margin: 12px 0;
   border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
+  border-radius: 0;
+  padding: 14px 35px;
   font-family: var(--body-font-family);
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: var(--body-font-size-xs);
   line-height: 1.25;
   text-align: center;
   text-decoration: none;
-  background-color: var(--link-color);
-  color: var(--background-color);
+  text-transform: uppercase;
+  background-color: var(--accent-color);
+  color: var(--text-color);
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -202,8 +199,15 @@ a.button:hover,
 a.button:focus,
 button:hover,
 button:focus {
-  background-color: var(--link-hover-color);
+  background-color: #e6d300;
   cursor: pointer;
+  text-decoration: none;
+}
+
+a.button:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--text-color);
+  outline-offset: 2px;
 }
 
 button:disabled,
@@ -263,4 +267,62 @@ main .section.highlight {
   background-color: var(--light-color);
   margin: 0;
   padding: 40px 0;
+}
+
+main .section.dark {
+  background-color: var(--dark-color);
+  color: var(--footer-text-color);
+  margin: 0;
+  padding: 40px 0;
+}
+
+/* separator */
+hr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 32px 0;
+}
+
+/* footer */
+footer {
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
+  padding: 16px 0 24px;
+}
+
+footer .footer-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+footer a:any-link {
+  color: var(--footer-text-color);
+}
+
+footer a:hover {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+footer h4 {
+  color: var(--footer-text-color);
+  font-family: var(--body-font-family);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: var(--body-font-size-xs);
+}
+
+footer p {
+  font-size: var(--body-font-size-s);
+  line-height: 1.5;
+}
+
+footer hr {
+  border-top-color: #444;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+footer img {
+  max-width: 120px;
 }
