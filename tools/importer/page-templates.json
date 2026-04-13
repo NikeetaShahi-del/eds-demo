@@ -1,0 +1,88 @@
+{
+  "templates": [
+    {
+      "name": "homepage",
+      "urls": [
+        "https://wknd.site/us/en.html"
+      ],
+      "description": "WKND homepage with hero carousel, featured articles, adventure cards, and CTA sections",
+      "blocks": [
+        {
+          "name": "carousel-hero",
+          "instances": [
+            ".carousel.cmp-carousel--hero"
+          ]
+        },
+        {
+          "name": "hero-featured",
+          "instances": [
+            ".teaser.cmp-teaser--featured"
+          ]
+        },
+        {
+          "name": "cards-article",
+          "instances": [
+            ".image-list.list"
+          ]
+        },
+        {
+          "name": "hero-adventure",
+          "instances": [
+            ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Hero Carousel",
+          "selector": ".carousel.cmp-carousel--hero",
+          "style": null,
+          "blocks": [
+            "carousel-hero"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-2",
+          "name": "Featured and Recent Articles",
+          "selector": "main.cmp-layout-container--fixed:first-of-type",
+          "style": null,
+          "blocks": [
+            "hero-featured",
+            "cards-article"
+          ],
+          "defaultContent": [
+            ".title.cmp-title--underline h2",
+            ".button.cmp-button--primary a",
+            ".separator hr"
+          ]
+        },
+        {
+          "id": "section-3",
+          "name": "Climbing New Zealand Hero",
+          "selector": ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom",
+          "style": null,
+          "blocks": [
+            "hero-adventure"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-4",
+          "name": "Adventures",
+          "selector": "main.cmp-layout-container--fixed:last-of-type",
+          "style": null,
+          "blocks": [
+            "cards-article"
+          ],
+          "defaultContent": [
+            ".title h3",
+            ".button.cmp-button--primary a",
+            ".separator hr"
+          ]
+        }
+      ]
+    }
+  ]
+}

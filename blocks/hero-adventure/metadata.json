@@ -1,0 +1,38 @@
+{
+  "variantName": "hero-adventure",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-04-10T12:44:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd.site/us/en.html",
+    "originPage": "WKND homepage",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "adventure-teaser",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "heading + text + CTA + image",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "adventure/trip teasers",
+      "full-width content with image",
+      "promotional hero blocks"
+    ],
+    "notSuitableFor": [
+      "text-only hero sections",
+      "multi-column layouts"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/content/us/en"],
+    "reuseCount": 1,
+    "lastUsed": "2026-04-10T12:44:00.000Z"
+  }
+}
