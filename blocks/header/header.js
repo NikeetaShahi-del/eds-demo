@@ -218,9 +218,17 @@ export default async function decorate(block) {
 
   const navTools = nav.querySelector('.nav-tools');
   if (navTools) {
-    const search = navTools.querySelector('a[href*="search"]');
-    if (search && search.textContent === '') {
-      search.setAttribute('aria-label', 'Search');
+    // Transform "Search" text into a search input with icon
+    const searchP = navTools.querySelector('p');
+    if (searchP && searchP.textContent.trim().toLowerCase() === 'search') {
+      const searchWrapper = document.createElement('div');
+      searchWrapper.classList.add('nav-search');
+      searchWrapper.innerHTML = `
+        <form class="nav-search-form" role="search">
+          <span class="nav-search-icon"></span>
+          <input class="nav-search-input" type="search" placeholder="Search" aria-label="Search">
+        </form>`;
+      searchP.replaceWith(searchWrapper);
     }
   }
 
