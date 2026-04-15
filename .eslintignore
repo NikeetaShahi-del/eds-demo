@@ -1,2 +1,7 @@
 helix-importer-ui
 dompurify.min.js
+tools/importer/*.bundle.js
+tools/importer/parsers/
+tools/importer/transformers/
+tools/importer/import-*.js
+downloadable/
