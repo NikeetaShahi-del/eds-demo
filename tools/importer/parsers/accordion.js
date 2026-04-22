@@ -13,6 +13,7 @@ export default function parse(element, { document }) {
     const panel = item.querySelector('.cmp-accordion__panel');
 
     const headerCell = document.createDocumentFragment();
+    headerCell.appendChild(document.createComment(' field:summary '));
     if (header) {
       const p = document.createElement('p');
       const strong = document.createElement('strong');
@@ -22,6 +23,7 @@ export default function parse(element, { document }) {
     }
 
     const bodyCell = document.createDocumentFragment();
+    bodyCell.appendChild(document.createComment(' field:text '));
     if (panel) {
       const content = panel.querySelectorAll('p, h1, h2, h3, h4, h5, h6, ul, ol');
       content.forEach((el) => {

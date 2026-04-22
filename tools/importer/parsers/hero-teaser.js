@@ -7,6 +7,7 @@
 export default function parse(element, { document }) {
   const img = element.querySelector('.cmp-teaser__image img, .cmp-image__image');
   const imageCell = document.createDocumentFragment();
+  imageCell.appendChild(document.createComment(' field:image '));
   if (img) {
     const picture = document.createElement('picture');
     const newImg = document.createElement('img');
@@ -17,6 +18,7 @@ export default function parse(element, { document }) {
   }
 
   const textCell = document.createDocumentFragment();
+  textCell.appendChild(document.createComment(' field:text '));
   const heading = element.querySelector('.cmp-teaser__title');
   if (heading) {
     const h2 = document.createElement('h2');

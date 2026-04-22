@@ -21,16 +21,18 @@ export default function parse(element, { document }) {
   tabs.forEach((tab, i) => {
     const label = tab.textContent.trim();
 
-    // Column 1: title — plain text only
+    // Column 1: title (text field)
     const titleCell = document.createDocumentFragment();
+    titleCell.appendChild(document.createComment(' field:title '));
     const titleP = document.createElement('p');
     titleP.textContent = label;
     titleCell.appendChild(titleP);
 
-    // Column 2: content group — ordered to match content_* fields
+    // Column 2: content group (content_heading, content_image, content_richtext)
     const contentCell = document.createDocumentFragment();
     if (panels[i]) {
-      // 1. content_heading + content_headingType: first heading element
+      // content_heading + content_headingType (Type is collapsed into heading tag)
+      contentCell.appendChild(document.createComment(' field:content_heading '));
       const heading = panels[i].querySelector('h3, h4, h5, h6');
       if (heading) {
         const h = document.createElement(heading.tagName.toLowerCase());
@@ -42,9 +44,10 @@ export default function parse(element, { document }) {
         contentCell.appendChild(h3);
       }
 
-      // 2. content_image: single image only (multi: false)
+      // content_image (single image)
       const firstImg = panels[i].querySelector('img');
       if (firstImg) {
+        contentCell.appendChild(document.createComment(' field:content_image '));
         const picture = document.createElement('picture');
         const newImg = document.createElement('img');
         newImg.src = firstImg.src;
@@ -53,16 +56,15 @@ export default function parse(element, { document }) {
         contentCell.appendChild(picture);
       }
 
-      // 3. content_richtext: remaining text content (paragraphs, lists)
+      // content_richtext (remaining text)
+      contentCell.appendChild(document.createComment(' field:content_richtext '));
       const textElements = panels[i].querySelectorAll('p, ul, ol');
       textElements.forEach((el) => {
-        // Skip paragraphs that only contain an image
         if (el.tagName === 'P') {
           const imgs = el.querySelectorAll('img');
           if (imgs.length > 0 && el.textContent.trim() === '') return;
         }
         const clone = el.cloneNode(true);
-        // Remove images from cloned text elements (already handled above)
         clone.querySelectorAll('img, picture').forEach((img) => img.remove());
         if (clone.textContent.trim()) {
           contentCell.appendChild(clone);

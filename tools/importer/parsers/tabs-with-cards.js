@@ -16,16 +16,18 @@ export default function parse(element, { document }) {
   tabs.forEach((tab, i) => {
     const label = tab.textContent.trim();
 
-    // Column 1: title — plain text
+    // Column 1: title (text field)
     const titleCell = document.createDocumentFragment();
+    titleCell.appendChild(document.createComment(' field:title '));
     const titleP = document.createElement('p');
     titleP.textContent = label;
     titleCell.appendChild(titleP);
 
-    // Column 2: content — build a cards-article block table
+    // Column 2: content group
     const contentCell = document.createDocumentFragment();
 
-    // Heading for the tab
+    // content_heading
+    contentCell.appendChild(document.createComment(' field:content_heading '));
     const h3 = document.createElement('h3');
     h3.textContent = label;
     contentCell.appendChild(h3);
@@ -40,6 +42,7 @@ export default function parse(element, { document }) {
         items.forEach((item) => {
           const img = item.querySelector('img');
           const imageCell = document.createDocumentFragment();
+          imageCell.appendChild(document.createComment(' field:image '));
           if (img) {
             const picture = document.createElement('picture');
             const newImg = document.createElement('img');
@@ -50,6 +53,7 @@ export default function parse(element, { document }) {
           }
 
           const textCell = document.createDocumentFragment();
+          textCell.appendChild(document.createComment(' field:text '));
           const titleEl = item.querySelector(
             '.cmp-image-list__item-title',
           );
@@ -88,6 +92,9 @@ export default function parse(element, { document }) {
         const cardsBlock = WebImporter.Blocks.createBlock(
           document,
           { name: 'cards-article', cells: cardCells },
+        );
+        contentCell.appendChild(
+          document.createComment(' field:content_richtext '),
         );
         contentCell.appendChild(cardsBlock);
       }

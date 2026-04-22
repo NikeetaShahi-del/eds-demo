@@ -11,6 +11,7 @@ export default function parse(element, { document }) {
   slides.forEach((slide) => {
     const img = slide.querySelector('img');
     const imageCell = document.createDocumentFragment();
+    imageCell.appendChild(document.createComment(' field:media_image '));
     if (img) {
       const picture = document.createElement('picture');
       const newImg = document.createElement('img');
@@ -19,7 +20,14 @@ export default function parse(element, { document }) {
       picture.appendChild(newImg);
       imageCell.appendChild(picture);
     }
-    cells.push([imageCell]);
+
+    const contentCell = document.createDocumentFragment();
+    contentCell.appendChild(document.createComment(' field:content_text '));
+    const p = document.createElement('p');
+    p.textContent = img ? (img.alt || '') : '';
+    contentCell.appendChild(p);
+
+    cells.push([imageCell, contentCell]);
   });
 
   const block = WebImporter.Blocks.createBlock(document, { name: 'carousel', cells });
