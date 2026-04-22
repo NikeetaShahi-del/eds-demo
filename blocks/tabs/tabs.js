@@ -1,8 +1,59 @@
 // eslint-disable-next-line import/no-unresolved
-import { moveInstrumentation } from '../../scripts/scripts.js';
+import {
+  moveInstrumentation,
+} from '../../scripts/scripts.js';
+import {
+  decorateBlock,
+  loadBlock,
+} from '../../scripts/aem.js';
 
 // keep track globally of the number of tab blocks on the page
 let tabBlockCnt = 0;
+
+/**
+ * Convert block tables inside an element into decorated block divs.
+ * EDS only auto-decorates top-level blocks; nested ones need manual handling.
+ */
+async function decorateNestedBlocks(container) {
+  const tables = container.querySelectorAll('table');
+  const blockPromises = [];
+
+  tables.forEach((table) => {
+    const header = table.querySelector('th');
+    if (!header) return;
+
+    const blockName = header.textContent.trim().toLowerCase().replace(/\s+/g, '-');
+    if (!blockName) return;
+
+    // Build block div from table rows
+    const blockEl = document.createElement('div');
+    blockEl.classList.add(blockName);
+
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach((row) => {
+      const rowEl = document.createElement('div');
+      row.querySelectorAll('td').forEach((cell) => {
+        const colEl = document.createElement('div');
+        colEl.innerHTML = cell.innerHTML;
+        rowEl.appendChild(colEl);
+      });
+      blockEl.appendChild(rowEl);
+    });
+
+    // Wrap in block wrapper
+    const wrapper = document.createElement('div');
+    wrapper.classList.add(`${blockName}-wrapper`);
+    wrapper.appendChild(blockEl);
+
+    table.replaceWith(wrapper);
+
+    // Decorate and load the block
+    decorateBlock(blockEl);
+    blockPromises.push(loadBlock(blockEl));
+  });
+
+  await Promise.all(blockPromises);
+}
 
 export default async function decorate(block) {
   // build tablist
@@ -13,7 +64,8 @@ export default async function decorate(block) {
 
   // the first cell of each row is the title of the tab
   const tabHeadings = [...block.children]
-    .filter((child) => child.firstElementChild && child.firstElementChild.children.length > 0)
+    .filter((child) => child.firstElementChild
+      && child.firstElementChild.children.length > 0)
     .map((child) => child.firstElementChild);
 
   tabHeadings.forEach((tab, i) => {
@@ -53,14 +105,17 @@ export default async function decorate(block) {
     // add the new tab list button, to the tablist
     tablist.append(button);
 
-    // remove the tab heading from the dom, which also removes it from the UE tree
+    // remove the tab heading from the dom
     tab.remove();
 
-    // remove the instrumentation from the button's h1, h2 etc (this removes it from the tree)
+    // remove the instrumentation from the button's children
     if (button.firstElementChild) {
       moveInstrumentation(button.firstElementChild, null);
     }
   });
 
   block.prepend(tablist);
+
+  // Decorate any nested blocks (e.g. cards-article tables) inside panels
+  await decorateNestedBlocks(block);
 }

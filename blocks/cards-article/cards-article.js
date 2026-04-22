@@ -19,6 +19,15 @@ export default function decorate(block) {
     moveInstrumentation(img, optimizedPic.querySelector('img'));
     img.closest('picture').replaceWith(optimizedPic);
   });
+  // Remove button styling from card title links
+  // EDS auto-converts <p><strong><a> to buttons, but cards need plain text links
+  ul.querySelectorAll('.button-container').forEach((bc) => {
+    bc.classList.remove('button-container');
+  });
+  ul.querySelectorAll('.button').forEach((btn) => {
+    btn.classList.remove('button', 'primary');
+  });
+
   block.textContent = '';
   block.append(ul);
 }

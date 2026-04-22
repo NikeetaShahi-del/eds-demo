@@ -3,7 +3,8 @@
     {
       "name": "homepage",
       "urls": [
-        "https://wknd.site/us/en.html"
+        "https://wknd.site/us/en.html",
+        "https://wknd.site/ca/en.html"
       ],
       "description": "WKND homepage with hero carousel, featured articles, adventure cards, and CTA sections",
       "blocks": [
@@ -83,6 +84,126 @@
           ]
         }
       ]
+    },
+    {
+      "name": "magazine-listing",
+      "urls": [
+        "https://wknd.site/us/en/magazine.html",
+        "https://wknd.site/ca/en/magazine.html"
+      ],
+      "description": "Magazine landing page listing all magazine articles with teaser cards",
+      "blocks": [
+        { "name": "hero-featured", "instances": [".teaser.cmp-teaser--featured"] },
+        { "name": "cards-article", "instances": [".image-list.list"] }
+      ]
+    },
+    {
+      "name": "magazine-article",
+      "urls": [
+        "https://wknd.site/us/en/magazine/san-diego-surf.html",
+        "https://wknd.site/us/en/magazine/western-australia.html",
+        "https://wknd.site/us/en/magazine/guide-la-skateparks.html",
+        "https://wknd.site/us/en/magazine/ski-touring.html",
+        "https://wknd.site/us/en/magazine/arctic-surfing.html",
+        "https://wknd.site/ca/en/magazine/san-diego-surf.html",
+        "https://wknd.site/ca/en/magazine/western-australia.html",
+        "https://wknd.site/ca/en/magazine/guide-la-skateparks.html",
+        "https://wknd.site/ca/en/magazine/ski-touring.html",
+        "https://wknd.site/ca/en/magazine/arctic-surfing.html"
+      ],
+      "description": "Magazine article detail page with hero image, article body content, and related articles",
+      "blocks": []
+    },
+    {
+      "name": "adventures-listing",
+      "urls": [
+        "https://wknd.site/us/en/adventures.html",
+        "https://wknd.site/ca/en/adventures.html"
+      ],
+      "description": "Adventures landing page with filterable grid of adventure cards",
+      "blocks": [
+        { "name": "hero", "instances": [".teaser:not(.cmp-teaser--featured):not(.cmp-teaser--hero):not(.cmp-teaser--list)"] },
+        { "name": "tabs", "instances": [".cmp-tabs"] },
+        { "name": "cards-article", "instances": [".image-list.list"] }
+      ]
+    },
+    {
+      "name": "adventure-detail",
+      "urls": [
+        "https://wknd.site/us/en/adventures/bali-surf-camp.html",
+        "https://wknd.site/us/en/adventures/beervana-portland.html",
+        "https://wknd.site/us/en/adventures/climbing-new-zealand.html",
+        "https://wknd.site/us/en/adventures/colorado-rock-climbing.html",
+        "https://wknd.site/us/en/adventures/cycling-southern-utah.html",
+        "https://wknd.site/us/en/adventures/cycling-tuscany.html",
+        "https://wknd.site/us/en/adventures/downhill-skiing-wyoming.html",
+        "https://wknd.site/us/en/adventures/gastronomic-marais-tour.html",
+        "https://wknd.site/us/en/adventures/napa-wine-tasting.html",
+        "https://wknd.site/us/en/adventures/riverside-camping-australia.html",
+        "https://wknd.site/us/en/adventures/ski-touring-mont-blanc.html",
+        "https://wknd.site/us/en/adventures/surf-camp-costa-rica.html",
+        "https://wknd.site/us/en/adventures/tahoe-skiing.html",
+        "https://wknd.site/us/en/adventures/west-coast-cycling.html",
+        "https://wknd.site/us/en/adventures/whistler-mountain-biking.html",
+        "https://wknd.site/us/en/adventures/yosemite-backpacking.html",
+        "https://wknd.site/ca/en/adventures/bali-surf-camp.html",
+        "https://wknd.site/ca/en/adventures/beervana-portland.html",
+        "https://wknd.site/ca/en/adventures/climbing-new-zealand.html",
+        "https://wknd.site/ca/en/adventures/colorado-rock-climbing.html",
+        "https://wknd.site/ca/en/adventures/cycling-southern-utah.html",
+        "https://wknd.site/ca/en/adventures/cycling-tuscany.html",
+        "https://wknd.site/ca/en/adventures/downhill-skiing-wyoming.html",
+        "https://wknd.site/ca/en/adventures/gastronomic-marais-tour.html",
+        "https://wknd.site/ca/en/adventures/napa-wine-tasting.html",
+        "https://wknd.site/ca/en/adventures/riverside-camping-australia.html",
+        "https://wknd.site/ca/en/adventures/ski-touring-mont-blanc.html",
+        "https://wknd.site/ca/en/adventures/surf-camp-costa-rica.html",
+        "https://wknd.site/ca/en/adventures/tahoe-skiing.html",
+        "https://wknd.site/ca/en/adventures/west-coast-cycling.html",
+        "https://wknd.site/ca/en/adventures/whistler-mountain-biking.html",
+        "https://wknd.site/ca/en/adventures/yosemite-backpacking.html"
+      ],
+      "description": "Adventure detail page with hero image, itinerary details, activity info, and pricing",
+      "blocks": [
+        { "name": "carousel", "instances": [".carousel.cmp-carousel--mini"] },
+        { "name": "tabs", "instances": [".tabs.panelcontainer"] }
+      ]
+    },
+    {
+      "name": "faqs-page",
+      "urls": [
+        "https://wknd.site/us/en/faqs.html",
+        "https://wknd.site/ca/en/faqs.html"
+      ],
+      "description": "Frequently asked questions page with expandable accordion-style Q&A sections",
+      "blocks": [
+        { "name": "accordion", "instances": [".accordion.panelcontainer"] }
+      ]
+    },
+    {
+      "name": "about-page",
+      "urls": [
+        "https://wknd.site/us/en/about-us.html",
+        "https://wknd.site/ca/en/about-us.html"
+      ],
+      "description": "About us page with company information, team details, and mission statement",
+      "blocks": []
+    },
+    {
+      "name": "placeholder-landing",
+      "urls": [
+        "https://wknd.site/us/es.html",
+        "https://wknd.site/ca/fr.html",
+        "https://wknd.site/ch/de.html",
+        "https://wknd.site/ch/fr.html",
+        "https://wknd.site/ch/it.html",
+        "https://wknd.site/de/de.html",
+        "https://wknd.site/fr/fr.html",
+        "https://wknd.site/es/es.html",
+        "https://wknd.site/it/it.html"
+      ],
+      "description": "Coming Soon placeholder landing page for non-English locale variants with hero image and language selector",
+      "blocks": []
     }
   ]
 }

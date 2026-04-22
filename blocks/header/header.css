@@ -4,6 +4,7 @@ header .nav-wrapper {
   width: 100%;
   z-index: 2;
   position: fixed;
+  border-bottom: 1px solid #eee;
 }
 
 header nav {
@@ -34,6 +35,7 @@ header nav[aria-expanded='true'] {
   header nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 0 32px;
     max-width: 1264px;
     padding: 0 32px;
@@ -52,6 +54,7 @@ header nav p {
 
 header nav a:any-link {
   color: currentcolor;
+  text-decoration: none;
 }
 
 /* hamburger */
@@ -135,7 +138,7 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   }
 }
 
-/* brand */
+/* brand - WKND logo */
 header .nav-brand {
   grid-area: brand;
   flex-basis: 128px;
@@ -149,7 +152,7 @@ header nav .nav-brand img {
   height: auto;
 }
 
-/* sections */
+/* sections - main navigation links */
 header nav .nav-sections {
   grid-area: sections;
   flex: 1 1 auto;
@@ -167,7 +170,9 @@ header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
   font-size: var(--body-font-size-xs);
+  font-weight: 400;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 header nav .nav-sections ul > li {
@@ -184,9 +189,11 @@ header nav .nav-sections ul > li > ul > li {
 
 @media (width >= 900px) {
   header nav .nav-sections {
-    display: block;
+    display: flex;
     visibility: visible;
     white-space: nowrap;
+    justify-content: flex-end;
+    align-items: center;
   }
 
   header nav[aria-expanded='true'] .nav-sections {
@@ -221,8 +228,9 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections ul {
     display: flex;
-    gap: 24px;
+    gap: 32px;
     margin: 0;
+    align-items: center;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li {
@@ -331,7 +339,7 @@ header nav .nav-search-input:focus {
   background-color: rgb(235 235 235 / 80%);
 }
 
-/* breadcrumbs */
+/* breadcrumbs — WKND: uppercase, 14px, semibold, yellow ▶ separator */
 header .breadcrumbs {
   display: none;
   margin: auto;
@@ -339,6 +347,8 @@ header .breadcrumbs {
   height: var(--breadcrumbs-height);
   padding: 0 24px;
   font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
   overflow: hidden;
 }
 
@@ -349,23 +359,39 @@ header .breadcrumbs ol {
   padding: 0;
   margin-top: 0;
   margin-bottom: 0;
-  gap: 1ch;
+  gap: 8px;
+  align-items: center;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
 header .breadcrumbs ol li {
   padding: 0;
   color: var(--dark-color);
+  font-weight: 600;
+}
+
+header .breadcrumbs ol li a {
+  color: var(--dark-color);
+  text-decoration: none;
+}
+
+header .breadcrumbs ol li a:hover {
+  text-decoration: underline;
 }
 
 header .breadcrumbs ol li:not(:last-child)::after {
-  content: '/';
-  padding-left: 1ch;
+  content: '▶';
+  padding-left: 8px;
+  color: var(--accent-color, #ffea00);
+  font-size: 10px;
+  font-weight: 400;
+  vertical-align: middle;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
 header .breadcrumbs ol li[aria-current] {
-  color: var(--text-color);
+  font-weight: 400;
+  color: #696969;
 }
 
 @media (width >= 900px) {

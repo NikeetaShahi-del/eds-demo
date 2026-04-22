@@ -16,6 +16,40 @@ export default function transform(hookName, element, payload) {
     ]);
   }
   if (hookName === H.after) {
+    // Convert <blockquote> to <em> paragraphs (blockquote not supported by md2jcr)
+    element.querySelectorAll('blockquote').forEach((bq) => {
+      const wrapper = document.createElement('div');
+      const children = [...bq.childNodes];
+      children.forEach((child) => {
+        if (child.nodeType === 1 && child.tagName === 'P') {
+          const em = document.createElement('em');
+          em.textContent = child.textContent;
+          const p = document.createElement('p');
+          p.appendChild(em);
+          wrapper.appendChild(p);
+        } else if (child.nodeType === 3 && child.textContent.trim()) {
+          const em = document.createElement('em');
+          em.textContent = child.textContent.trim();
+          const p = document.createElement('p');
+          p.appendChild(em);
+          wrapper.appendChild(p);
+        } else {
+          wrapper.appendChild(child.cloneNode(true));
+        }
+      });
+      bq.replaceWith(wrapper);
+    });
+
+    // Remove breadcrumb <ol> from content (EDS header handles breadcrumbs)
+    element.querySelectorAll('.breadcrumb, .cmp-breadcrumb').forEach((bc) => bc.remove());
+    // Also remove standalone breadcrumb-like <ol> at start of main content
+    const firstOl = element.querySelector('main ol:first-child, .cmp-container > .aem-Grid > ol:first-child');
+    if (firstOl) {
+      const items = firstOl.querySelectorAll('li');
+      const looksLikeBreadcrumb = items.length <= 4 && [...items].some((li) => li.querySelector('a'));
+      if (looksLikeBreadcrumb) firstOl.remove();
+    }
+
     // Remove non-authorable content: header, footer, mobile nav (from captured DOM)
     WebImporter.DOMUtils.remove(element, [
       'header.experiencefragment',

@@ -326,3 +326,69 @@ footer hr {
 footer img {
   max-width: 120px;
 }
+
+/*
+ * Adventure detail page layout
+ * Two-column: metadata sidebar (left) + tabs content (right)
+ * The section contains: carousel-wrapper, default-content-wrapper, tabs-wrapper
+ */
+
+/* Adventure metadata list — styled as compact sidebar items */
+main .section .default-content-wrapper ul:has(> li > p + p) {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+main .section .default-content-wrapper ul:has(> li > p + p) li {
+  padding: 12px 0;
+  border-left: 3px solid #eee;
+  padding-left: 16px;
+  margin-bottom: 8px;
+}
+
+/* Label: small uppercase grey */
+main .section .default-content-wrapper ul:has(> li > p + p) li p:first-child {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #696969;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Value: bold */
+main .section .default-content-wrapper ul:has(> li > p + p) li p:last-child {
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Hide duplicate h3 and "Share" heading on adventure detail pages */
+main .section.tabs-container .default-content-wrapper h3,
+main .section.tabs-container .default-content-wrapper h5 {
+  display: none;
+}
+
+/* Two-column layout: metadata sidebar + tabs on desktop */
+@media (width >= 900px) {
+  /* Metadata sidebar: float left */
+  main .section.tabs-container .default-content-wrapper ul {
+    float: left;
+    width: 200px;
+    clear: left;
+  }
+
+  /* Clear the float after the default-content-wrapper */
+  main .section.tabs-container .default-content-wrapper::after {
+    content: '';
+    display: table;
+    clear: none;
+  }
+
+  /* Tabs: offset to the right of the sidebar */
+  main .section.tabs-container .tabs-wrapper {
+    margin-left: 240px;
+  }
+}

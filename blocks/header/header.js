@@ -1,5 +1,4 @@
 import { getMetadata } from '../../scripts/aem.js';
-import { fetchPlaceholders } from '../../scripts/placeholders.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
@@ -104,43 +103,34 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   }
 }
 
-function getDirectTextContent(menuItem) {
-  const menuLink = menuItem.querySelector(':scope > :where(a,p)');
-  if (menuLink) {
-    return menuLink.textContent.trim();
-  }
-  return Array.from(menuItem.childNodes)
-    .filter((n) => n.nodeType === Node.TEXT_NODE)
-    .map((n) => n.textContent)
-    .join(' ');
-}
-
-async function buildBreadcrumbsFromNavTree(nav, currentUrl) {
+async function buildBreadcrumbsFromPath() {
   const crumbs = [];
+  const { pathname } = window.location;
 
-  const homeUrl = document.querySelector('.nav-brand a[href]').href;
+  // Extract path segments after the locale prefix
+  const segments = pathname.replace(/\/$/, '').split('/').filter(Boolean);
+  // Find the locale base index (after 'content', country, language)
+  const contentIdx = segments.indexOf('content');
+  const startIdx = contentIdx >= 0 ? contentIdx + 3 : 2;
 
-  let menuItem = Array.from(nav.querySelectorAll('a')).find((a) => a.href === currentUrl);
-  if (menuItem) {
-    do {
-      const link = menuItem.querySelector(':scope > a');
-      crumbs.unshift({ title: getDirectTextContent(menuItem), url: link ? link.href : null });
-      menuItem = menuItem.closest('ul')?.closest('li');
-    } while (menuItem);
-  } else if (currentUrl !== homeUrl) {
-    crumbs.unshift({ title: getMetadata('og:title'), url: currentUrl });
+  // Only show parent section(s) + current page (no "Home"), matching source site
+  const relevantSegments = segments.slice(startIdx);
+  if (relevantSegments.length < 2) return crumbs;
+
+  // Build path for each segment
+  const basePath = segments.slice(0, startIdx).join('/');
+  relevantSegments.forEach((seg, i) => {
+    const title = seg.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    const isLast = i === relevantSegments.length - 1;
+    const url = isLast ? null : `/${basePath}/${relevantSegments.slice(0, i + 1).join('/')}`;
+    crumbs.push({ title: isLast ? (getMetadata('og:title') || title) : title, url });
+  });
+
+  // Use page title for the last crumb
+  if (crumbs.length > 0) {
+    crumbs[crumbs.length - 1]['aria-current'] = 'page';
   }
 
-  const placeholders = await fetchPlaceholders();
-  const homePlaceholder = placeholders.breadcrumbsHomeLabel || 'Home';
-
-  crumbs.unshift({ title: homePlaceholder, url: homeUrl });
-
-  // last link is current page and should not be linked
-  if (crumbs.length > 1) {
-    crumbs[crumbs.length - 1].url = null;
-  }
-  crumbs[crumbs.length - 1]['aria-current'] = 'page';
   return crumbs;
 }
 
@@ -148,7 +138,7 @@ async function buildBreadcrumbs() {
   const breadcrumbs = document.createElement('nav');
   breadcrumbs.className = 'breadcrumbs';
 
-  const crumbs = await buildBreadcrumbsFromNavTree(document.querySelector('.nav-sections'), document.location.href);
+  const crumbs = await buildBreadcrumbsFromPath();
 
   const ol = document.createElement('ol');
   ol.append(...crumbs.map((item) => {
@@ -250,7 +240,10 @@ export default async function decorate(block) {
   navWrapper.append(nav);
   block.append(navWrapper);
 
-  if (getMetadata('breadcrumbs').toLowerCase() === 'true') {
+  // Show breadcrumbs on sub-pages (depth > 2 path segments, e.g. /content/us/en/magazine/article)
+  const breadcrumbsMeta = getMetadata('breadcrumbs');
+  const pathDepth = window.location.pathname.replace(/\/$/, '').split('/').filter(Boolean).length;
+  if (breadcrumbsMeta.toLowerCase() === 'true' || pathDepth > 3) {
     navWrapper.append(await buildBreadcrumbs());
   }
 }
