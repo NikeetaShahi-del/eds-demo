@@ -23,7 +23,18 @@ export async function loadFragment(path) {
     const resp = await fetch(`${path}.plain.html`);
     if (resp.ok) {
       const main = document.createElement('main');
-      main.innerHTML = await resp.text();
+      const html = await resp.text();
+      // Strip server-injected <head> wrapper (scripts, styles, meta)
+      const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+      const headEnd = html.indexOf('</head>');
+      if (bodyMatch) {
+        const [, bodyContent] = bodyMatch;
+        main.innerHTML = bodyContent;
+      } else if (headEnd > -1) {
+        main.innerHTML = html.substring(headEnd + 7);
+      } else {
+        main.innerHTML = html;
+      }
 
       // reset base path for media to fragment base
       const resetAttributeBase = (tag, attr) => {
