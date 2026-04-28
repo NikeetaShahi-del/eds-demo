@@ -34,61 +34,14 @@ var CustomImportScript = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // tools/importer/import-homepage.js
-  var import_homepage_exports = {};
-  __export(import_homepage_exports, {
-    default: () => import_homepage_default
+  // tools/importer/import-magazine-listing.js
+  var import_magazine_listing_exports = {};
+  __export(import_magazine_listing_exports, {
+    default: () => import_magazine_listing_default
   });
 
-  // tools/importer/parsers/carousel-hero.js
-  function parse(element, { document: document2 }) {
-    const slides = element.querySelectorAll(".cmp-carousel__item");
-    const cells = [];
-    slides.forEach((slide) => {
-      const teaser = slide.querySelector(".cmp-teaser");
-      if (!teaser) return;
-      const img = teaser.querySelector(".cmp-teaser__image img, .cmp-image__image");
-      const imageCell = document2.createDocumentFragment();
-      imageCell.appendChild(document2.createComment(" field:media_image "));
-      if (img) {
-        const picture = document2.createElement("picture");
-        const newImg = document2.createElement("img");
-        newImg.src = img.src;
-        newImg.alt = img.alt || "";
-        picture.appendChild(newImg);
-        imageCell.appendChild(picture);
-      }
-      const contentCell = document2.createDocumentFragment();
-      contentCell.appendChild(document2.createComment(" field:content_text "));
-      const heading = teaser.querySelector(".cmp-teaser__title");
-      if (heading) {
-        const h2 = document2.createElement("h2");
-        h2.textContent = heading.textContent.trim();
-        contentCell.appendChild(h2);
-      }
-      const desc = teaser.querySelector(".cmp-teaser__description");
-      if (desc) {
-        const p = document2.createElement("p");
-        p.textContent = desc.textContent.trim();
-        contentCell.appendChild(p);
-      }
-      const cta = teaser.querySelector(".cmp-teaser__action-link");
-      if (cta) {
-        const p = document2.createElement("p");
-        const a = document2.createElement("a");
-        a.href = cta.href;
-        a.textContent = cta.textContent.trim();
-        p.appendChild(a);
-        contentCell.appendChild(p);
-      }
-      cells.push([imageCell, contentCell]);
-    });
-    const block = WebImporter.Blocks.createBlock(document2, { name: "carousel-hero", cells });
-    element.replaceWith(block);
-  }
-
   // tools/importer/parsers/hero-featured.js
-  function parse2(element, { document: document2 }) {
+  function parse(element, { document: document2 }) {
     const img = element.querySelector(".cmp-teaser__image img, .cmp-image__image");
     const imageCell = document2.createDocumentFragment();
     imageCell.appendChild(document2.createComment(" field:image "));
@@ -138,7 +91,7 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/cards-article.js
-  function parse3(element, { document: document2 }) {
+  function parse2(element, { document: document2 }) {
     const items = element.querySelectorAll(".cmp-image-list__item");
     const cells = [];
     items.forEach((item) => {
@@ -182,50 +135,6 @@ var CustomImportScript = (() => {
       cells.push([imageCell, textCell]);
     });
     const block = WebImporter.Blocks.createBlock(document2, { name: "cards-article", cells });
-    element.replaceWith(block);
-  }
-
-  // tools/importer/parsers/hero-adventure.js
-  function parse4(element, { document: document2 }) {
-    const img = element.querySelector(".cmp-teaser__image img, .cmp-image__image");
-    const imageCell = document2.createDocumentFragment();
-    imageCell.appendChild(document2.createComment(" field:image "));
-    if (img) {
-      const picture = document2.createElement("picture");
-      const newImg = document2.createElement("img");
-      newImg.src = img.src;
-      newImg.alt = img.alt || "";
-      picture.appendChild(newImg);
-      imageCell.appendChild(picture);
-    }
-    const textCell = document2.createDocumentFragment();
-    textCell.appendChild(document2.createComment(" field:text "));
-    const heading = element.querySelector(".cmp-teaser__title");
-    if (heading) {
-      const h2 = document2.createElement("h2");
-      h2.textContent = heading.textContent.trim();
-      textCell.appendChild(h2);
-    }
-    const desc = element.querySelector(".cmp-teaser__description");
-    if (desc) {
-      const p = document2.createElement("p");
-      p.textContent = desc.textContent.trim();
-      textCell.appendChild(p);
-    }
-    const cta = element.querySelector(".cmp-teaser__action-link");
-    if (cta) {
-      const p = document2.createElement("p");
-      const a = document2.createElement("a");
-      a.href = cta.href;
-      a.textContent = cta.textContent.trim();
-      p.appendChild(a);
-      textCell.appendChild(p);
-    }
-    const cells = [
-      [imageCell],
-      [textCell]
-    ];
-    const block = WebImporter.Blocks.createBlock(document2, { name: "hero-adventure", cells });
     element.replaceWith(block);
   }
 
@@ -287,116 +196,27 @@ var CustomImportScript = (() => {
     }
   }
 
-  // tools/importer/transformers/wknd-sections.js
-  var H2 = { before: "beforeTransform", after: "afterTransform" };
-  function transform2(hookName, element, payload) {
-    if (hookName === H2.after) {
-      const { document: document2 } = payload;
-      const sections = payload.template && payload.template.sections;
-      if (!sections || sections.length < 2) return;
-      const reversedSections = [...sections].reverse();
-      for (const section of reversedSections) {
-        const selectors = Array.isArray(section.selector) ? section.selector : [section.selector];
-        let sectionEl = null;
-        for (const sel of selectors) {
-          sectionEl = element.querySelector(sel);
-          if (sectionEl) break;
-        }
-        if (!sectionEl) continue;
-        if (section.style) {
-          const sectionMetadata = WebImporter.Blocks.createBlock(document2, {
-            name: "Section Metadata",
-            cells: { style: section.style }
-          });
-          sectionEl.after(sectionMetadata);
-        }
-        if (section.id !== sections[0].id) {
-          const hr = document2.createElement("hr");
-          sectionEl.before(hr);
-        }
-      }
-    }
-  }
-
-  // tools/importer/import-homepage.js
+  // tools/importer/import-magazine-listing.js
   var parsers = {
-    "carousel-hero": parse,
-    "hero-featured": parse2,
-    "cards-article": parse3,
-    "hero-adventure": parse4
+    "hero-featured": parse,
+    "cards-article": parse2
   };
   var PAGE_TEMPLATE = {
-    name: "homepage",
-    description: "WKND homepage with hero carousel, featured articles, adventure cards, and CTA sections",
-    urls: [
-      "https://wknd.site/us/en.html"
-    ],
+    name: "magazine-listing",
     blocks: [
-      {
-        name: "carousel-hero",
-        instances: [".carousel.cmp-carousel--hero"]
-      },
-      {
-        name: "hero-featured",
-        instances: [".teaser.cmp-teaser--featured"]
-      },
-      {
-        name: "cards-article",
-        instances: [".image-list.list"]
-      },
-      {
-        name: "hero-adventure",
-        instances: [".teaser.cmp-teaser--hero.cmp-teaser--imagebottom"]
-      }
+      { name: "hero-featured", instances: [".teaser.cmp-teaser--featured"] },
+      { name: "cards-article", instances: [".image-list.list"] }
     ],
-    sections: [
-      {
-        id: "section-1",
-        name: "Hero Carousel",
-        selector: ".carousel.cmp-carousel--hero",
-        style: null,
-        blocks: ["carousel-hero"],
-        defaultContent: []
-      },
-      {
-        id: "section-2",
-        name: "Featured and Recent Articles",
-        selector: "main.cmp-layout-container--fixed:first-of-type",
-        style: null,
-        blocks: ["hero-featured", "cards-article"],
-        defaultContent: [".title.cmp-title--underline h2", ".button.cmp-button--primary a", ".separator hr"]
-      },
-      {
-        id: "section-3",
-        name: "Climbing New Zealand Hero",
-        selector: ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom",
-        style: null,
-        blocks: ["hero-adventure"],
-        defaultContent: []
-      },
-      {
-        id: "section-4",
-        name: "Adventures",
-        selector: "main.cmp-layout-container--fixed:last-of-type",
-        style: null,
-        blocks: ["cards-article"],
-        defaultContent: [".title h3", ".button.cmp-button--primary a", ".separator hr"]
-      }
-    ]
+    sections: []
   };
-  var transformers = [
-    transform,
-    ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform2] : []
-  ];
+  var transformers = [transform];
   function executeTransformers(hookName, element, payload) {
-    const enhancedPayload = __spreadProps(__spreadValues({}, payload), {
-      template: PAGE_TEMPLATE
-    });
-    transformers.forEach((transformerFn) => {
+    const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });
+    transformers.forEach((t) => {
       try {
-        transformerFn.call(null, hookName, element, enhancedPayload);
+        t(hookName, element, enhancedPayload);
       } catch (e) {
-        console.error(`Transformer failed at ${hookName}:`, e);
+        console.error(e);
       }
     });
   }
@@ -404,24 +224,15 @@ var CustomImportScript = (() => {
     const pageBlocks = [];
     template.blocks.forEach((blockDef) => {
       blockDef.instances.forEach((selector) => {
-        const elements = document2.querySelectorAll(selector);
-        if (elements.length === 0) {
-          console.warn(`Block "${blockDef.name}" selector not found: ${selector}`);
-        }
-        elements.forEach((element) => {
-          pageBlocks.push({
-            name: blockDef.name,
-            selector,
-            element,
-            section: blockDef.section || null
-          });
+        document2.querySelectorAll(selector).forEach((element) => {
+          pageBlocks.push({ name: blockDef.name, selector, element });
         });
       });
     });
     console.log(`Found ${pageBlocks.length} block instances on page`);
     return pageBlocks;
   }
-  var import_homepage_default = {
+  var import_magazine_listing_default = {
     transform: (payload) => {
       const { document: document2, url, params } = payload;
       const main = document2.body;
@@ -433,10 +244,8 @@ var CustomImportScript = (() => {
           try {
             parser(block.element, { document: document2, url, params });
           } catch (e) {
-            console.error(`Failed to parse ${block.name} (${block.selector}):`, e);
+            console.error(e);
           }
-        } else {
-          console.warn(`No parser found for block: ${block.name}`);
         }
       });
       executeTransformers("afterTransform", main, payload);
@@ -445,19 +254,9 @@ var CustomImportScript = (() => {
       WebImporter.rules.createMetadata(main, document2);
       WebImporter.rules.transformBackgroundImages(main, document2);
       WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
-      const path = WebImporter.FileUtils.sanitizePath(
-        new URL(params.originalURL).pathname.replace(/\/$/, "").replace(/\.html$/, "")
-      );
-      return [{
-        element: main,
-        path,
-        report: {
-          title: document2.title,
-          template: PAGE_TEMPLATE.name,
-          blocks: pageBlocks.map((b) => b.name)
-        }
-      }];
+      const path = WebImporter.FileUtils.sanitizePath(new URL(params.originalURL).pathname.replace(/\/$/, "").replace(/\.html$/, ""));
+      return [{ element: main, path, report: { title: document2.title, template: PAGE_TEMPLATE.name, blocks: pageBlocks.map((b) => b.name) } }];
     }
   };
-  return __toCommonJS(import_homepage_exports);
+  return __toCommonJS(import_magazine_listing_exports);
 })();
