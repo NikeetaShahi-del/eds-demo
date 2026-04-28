@@ -1,4 +1,11 @@
+/* Columns block - supports both EDS decorated and AEM author views */
 .columns > div {
+  display: flex;
+  flex-direction: column;
+}
+
+/* AEM author view: columns class is on the outer div */
+div.columns > div {
   display: flex;
   flex-direction: column;
 }
