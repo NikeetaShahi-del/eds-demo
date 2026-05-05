@@ -12,11 +12,12 @@
 
 .hero > div:first-child {
   overflow: hidden;
+  line-height: 0;
 }
 
 .hero > div:first-child picture {
   display: block;
-  line-height: 0;
+  height: 100%;
 }
 
 .hero > div:first-child img {
@@ -29,6 +30,7 @@
   padding: 32px 24px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   background-color: #ebebeb;
 }
 
@@ -47,13 +49,6 @@
   font-size: var(--body-font-size-xs);
   line-height: 1.75;
   color: var(--text-color);
-  margin: 0 0 16px;
-}
-
-/* stylelint-disable-next-line no-descending-specificity */
-.hero > div:last-child > div > p:first-child {
-  font-size: var(--body-font-size-m);
-  font-weight: 700;
   margin: 0 0 16px;
 }
 
@@ -76,16 +71,15 @@
 
   .hero {
     flex-direction: row;
+    align-items: stretch;
   }
 
   .hero > div:first-child {
     flex: 0 0 60%;
-    min-height: 500px;
   }
 
   .hero > div:last-child {
     flex: 0 0 40%;
-    padding: 63px 36px 36px;
-    justify-content: flex-start;
+    padding: 48px 36px;
   }
 }
