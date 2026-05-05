@@ -84,11 +84,26 @@
 
   .hero.hero-featured > div:first-child {
     flex: 0 0 55%;
+    display: flex;
   }
 
+  /* stylelint-disable-next-line no-descending-specificity */
   .hero.hero-featured > div:last-child {
     flex: 0 0 45%;
     padding: 48px 40px;
+  }
+
+  .hero.hero-featured > div:first-child > div {
+    flex: 1;
+  }
+
+  .hero.hero-featured > div:first-child picture {
+    height: 100%;
+  }
+
+  .hero.hero-featured > div:first-child img {
+    height: 100%;
+    object-fit: cover;
   }
 }
 
