@@ -38,13 +38,24 @@
   display: block;
 }
 
-.cards .cards-card-body p strong a {
+.cards .cards-card-body p strong a,
+.cards .cards-card-body p strong a.button:any-link {
+  display: inline;
+  background-color: transparent;
   color: var(--text-color);
   text-decoration: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+  font-size: inherit;
+  font-weight: inherit;
+  text-transform: inherit;
+  white-space: normal;
 }
 
 .cards .cards-card-body p strong a:hover {
   text-decoration: underline;
+  background-color: transparent;
 }
 
 .cards .cards-card-body p:last-child {
