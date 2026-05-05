@@ -1,8 +1,8 @@
 export default function decorate(block) {
-  const contentDiv = block.querySelector(':scope > div:last-child > div');
-  const hasPreTitle = contentDiv && contentDiv.querySelector(':scope > p:first-child strong');
+  const allHeroes = document.querySelectorAll('.hero');
+  const isFirst = allHeroes.length > 0 && allHeroes[0] === block;
 
-  if (hasPreTitle) {
+  if (isFirst) {
     block.classList.add('hero-featured');
   } else {
     block.classList.add('hero-banner');
