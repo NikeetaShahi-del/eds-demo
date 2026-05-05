@@ -54,11 +54,10 @@
 }
 
 /* ===========================================
-   Featured Article variant
-   Image left 60%, content right 40% with #ebebeb background
-   Hero that has cards/buttons siblings after it
+   Featured Article variant (.hero-featured)
+   Image left 60%, content right 40%, grey background
    =========================================== */
-.hero > div:last-child {
+.hero.hero-featured > div:last-child {
   padding: 32px 24px;
   display: flex;
   flex-direction: column;
@@ -67,53 +66,42 @@
 }
 
 @media (width >= 900px) {
-  .hero {
+  .hero.hero-featured {
     flex-direction: row;
     align-items: stretch;
   }
 
-  .hero > div:first-child {
+  .hero.hero-featured > div:first-child {
     flex: 0 0 60%;
   }
 
-  .hero > div:last-child {
+  .hero.hero-featured > div:last-child {
     flex: 0 0 40%;
     padding: 48px 36px;
   }
 }
 
 /* ===========================================
-   Climbing NZ variant (full-width image, overlapping content panel)
-   Hero that is preceded by an h2 title (last child in its section)
-   Use :last-child since it's the last element after the title
+   Climbing NZ Banner variant (.hero-banner)
+   Full-width image, content panel 80% width overlapping bottom
    =========================================== */
-.hero:last-child > div:last-child {
+.hero.hero-banner > div:last-child {
   background-color: var(--background-color);
   padding: 24px;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-.hero:last-child p {
+.hero.hero-banner p {
   font-size: var(--body-font-size-m);
   line-height: 1.75;
 }
 
 @media (width >= 900px) {
-  .hero:last-child {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .hero:last-child > div:first-child {
-    flex: unset;
-  }
-
-  .hero:last-child > div:first-child img {
+  .hero.hero-banner > div:first-child img {
     height: 520px;
   }
 
-  .hero:last-child > div:last-child {
-    flex: unset;
+  .hero.hero-banner > div:last-child {
     width: 80%;
     margin: -80px auto 0;
     padding: 32px 40px;
