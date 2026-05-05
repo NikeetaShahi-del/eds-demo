@@ -1,72 +1,90 @@
-/* Hero - WKND full-width background image with text overlay */
+/* Hero - Featured Article style (side-by-side: content left, image right) */
 .hero-container .hero-wrapper {
-  max-width: unset;
-  padding: 0;
+  max-width: 1200px;
+  padding: 0 24px;
 }
 
 .hero {
-  position: relative;
-  padding: 40px 24px;
-  min-height: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
+  margin: 0 0 18px;
 }
 
 .hero > div:first-child {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
   overflow: hidden;
 }
 
 .hero > div:first-child picture {
   display: block;
-  height: 100%;
+  line-height: 0;
 }
 
 .hero > div:first-child img {
-  object-fit: cover;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .hero > div:last-child {
-  z-index: 1;
-  background-color: rgb(255 255 255 / 92%);
-  padding: 24px;
-  max-width: 100%;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .hero h1,
 .hero h2 {
   margin-top: 0;
+  margin-bottom: 18px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xl);
+  font-weight: 400;
+  line-height: 1.5;
   color: var(--text-color);
 }
 
 .hero p {
+  font-size: var(--body-font-size-xs);
   line-height: 1.75;
+  color: var(--text-color);
+  margin: 0 0 16px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.hero > div:last-child > div > p:first-child {
+  font-size: var(--body-font-size-m);
+  font-weight: 700;
+  margin: 0 0 4px;
 }
 
 .hero a.button:any-link {
   background-color: var(--accent-color);
   color: var(--text-color);
+  padding: 14px 35px;
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 8px;
 }
 
 @media (width >= 900px) {
+  .hero-container .hero-wrapper {
+    padding: 0 32px;
+  }
+
   .hero {
-    padding: 60px;
+    flex-direction: row-reverse;
+  }
+
+  .hero > div:first-child {
+    flex: 1 1 50%;
     min-height: 500px;
   }
 
   .hero > div:last-child {
-    max-width: 45%;
-    padding: 32px;
-  }
-
-  .hero h1,
-  .hero h2 {
-    font-size: var(--heading-font-size-xl);
+    flex: 1 1 50%;
+    padding: 63px 36px 36px;
+    justify-content: flex-start;
   }
 }
