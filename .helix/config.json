@@ -1,0 +1,16 @@
+{
+  "host": "main--eds-demo--nikeetashahi-del.aem.live",
+  "code": {
+    "owner": "nikeetashahi-del",
+    "repo": "eds-demo",
+    "ref": "main"
+  },
+  "content": {
+    "source": {
+      "url": "https://author-p11300-e47725.adobeaemcloud.com/bin/franklin.delivery/nikeetashahi-del/eds-demo/main",
+      "type": "markup",
+      "suffix": ".html"
+    },
+    "contentBusId": "c83495b1d959dbf9105d80c0dc9bb070dc9f0ddd9468d36eb298eb2bab4"
+  }
+}
