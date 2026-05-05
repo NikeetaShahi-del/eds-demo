@@ -1,9 +1,6 @@
-/* Hero - Featured Article style (image left, content right with grey bg) */
-.hero-container .hero-wrapper {
-  max-width: 1200px;
-  padding: 0 24px;
-}
-
+/* ===========================================
+   Hero - Base shared styles
+   =========================================== */
 .hero {
   display: flex;
   flex-direction: column;
@@ -24,14 +21,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.hero > div:last-child {
-  padding: 32px 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: #ebebeb;
 }
 
 .hero h1,
@@ -64,11 +53,20 @@
   margin-top: 8px;
 }
 
-@media (width >= 900px) {
-  .hero-container .hero-wrapper {
-    padding: 0 32px;
-  }
+/* ===========================================
+   Featured Article variant
+   Image left 60%, content right 40% with #ebebeb background
+   Hero that has cards/buttons siblings after it
+   =========================================== */
+.hero > div:last-child {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ebebeb;
+}
 
+@media (width >= 900px) {
   .hero {
     flex-direction: row;
     align-items: stretch;
@@ -84,43 +82,42 @@
   }
 }
 
-/* Climbing NZ variant: hero is the only block in its section */
-.hero:only-child {
-  flex-direction: column;
-  margin: 0;
-}
-
-.hero:only-child > div:first-child img {
-  height: 520px;
-}
-
-.hero:only-child > div:last-child {
+/* ===========================================
+   Climbing NZ variant (full-width image, overlapping content panel)
+   Hero that is preceded by an h2 title (last child in its section)
+   Use :last-child since it's the last element after the title
+   =========================================== */
+.hero:last-child > div:last-child {
   background-color: var(--background-color);
   padding: 24px;
-  max-width: 700px;
-  margin: -60px 0 0 24px;
-  position: relative;
-  z-index: 1;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-.hero:only-child p {
+.hero:last-child p {
   font-size: var(--body-font-size-m);
   line-height: 1.75;
 }
 
 @media (width >= 900px) {
-  .hero:only-child {
+  .hero:last-child {
     flex-direction: column;
+    align-items: stretch;
   }
 
-  .hero:only-child > div:first-child {
+  .hero:last-child > div:first-child {
     flex: unset;
   }
 
-  .hero:only-child > div:last-child {
+  .hero:last-child > div:first-child img {
+    height: 520px;
+  }
+
+  .hero:last-child > div:last-child {
     flex: unset;
-    margin: -80px 0 0 48px;
-    padding: 32px;
+    width: 80%;
+    margin: -80px auto 0;
+    padding: 32px 40px;
+    position: relative;
+    z-index: 1;
   }
 }
