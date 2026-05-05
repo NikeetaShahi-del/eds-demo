@@ -1,3 +1,4 @@
+/* Cards - WKND article cards (no border, image + title + description) */
 .cards > ul {
   list-style: none;
   margin: 0;
@@ -8,12 +9,7 @@
 }
 
 .cards > ul > li {
-  border: 1px solid #dadada;
   background-color: var(--background-color);
-}
-
-.cards .cards-card-body {
-  margin: 16px;
 }
 
 .cards .cards-card-image {
@@ -24,4 +20,40 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+.cards .cards-card-body {
+  padding: 12px 0;
+}
+
+.cards .cards-card-body p {
+  margin: 0 0 8px;
+}
+
+.cards .cards-card-body p strong {
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-s);
+  font-weight: 600;
+  text-transform: uppercase;
+  display: block;
+}
+
+.cards .cards-card-body p strong a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.cards .cards-card-body p strong a:hover {
+  text-decoration: underline;
+}
+
+.cards .cards-card-body p:last-child {
+  font-size: var(--body-font-size-xs);
+  color: #696969;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }

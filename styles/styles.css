@@ -276,6 +276,19 @@ main .section.dark {
   padding: 40px 0;
 }
 
+/* section headings with yellow underline */
+main .section .default-content-wrapper h2 {
+  padding-bottom: 12px;
+}
+
+main .section .default-content-wrapper h2::after {
+  content: "";
+  display: block;
+  width: 84px;
+  border-bottom: 2px solid var(--accent-color);
+  margin-top: 10px;
+}
+
 /* separator */
 hr {
   border: 0;
