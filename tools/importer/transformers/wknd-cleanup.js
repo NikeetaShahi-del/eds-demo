@@ -2,69 +2,63 @@
 /* global WebImporter */
 
 /**
- * Transformer: WKND cleanup. Selectors from captured DOM of https://wknd.site/us/en.html
+ * Transformer: WKND site-wide cleanup.
+ * Removes non-authorable content (header/footer experience fragments, mobile nav,
+ * tracking iframes, sign-in UI, search widget) so only page-level authorable
+ * content remains after import.
+ *
+ * All selectors sourced from migration-work/cleaned.html captured DOM.
  */
-const H = { before: 'beforeTransform', after: 'afterTransform' };
+const TransformHook = { beforeTransform: 'beforeTransform', afterTransform: 'afterTransform' };
 
 export default function transform(hookName, element, payload) {
-  if (hookName === H.before) {
-    // Remove cookie/tracking iframes and analytics pixels (from captured DOM)
+  if (hookName === TransformHook.beforeTransform) {
+    // Remove tracking/analytics iframe (demdex.net) -- found as iframe#destination_publishing_iframe_wkndsite_0
     WebImporter.DOMUtils.remove(element, [
-      'iframe[title="Adobe ID Syncing iFrame"]',
-      'img[src*="demdex.net"]',
-      'img[src*="2o7.net"]',
+      'iframe#destination_publishing_iframe_wkndsite_0',
+      'iframe[src*="demdex.net"]',
     ]);
+
+    // Remove orphan <meta> tags inside teaser image containers -- found in .cmp-image > meta
+    const orphanMeta = element.querySelectorAll('.cmp-image > meta');
+    orphanMeta.forEach((el) => el.remove());
   }
-  if (hookName === H.after) {
-    // Convert <blockquote> to <em> paragraphs (blockquote not supported by md2jcr)
-    element.querySelectorAll('blockquote').forEach((bq) => {
-      const wrapper = document.createElement('div');
-      const children = [...bq.childNodes];
-      children.forEach((child) => {
-        if (child.nodeType === 1 && child.tagName === 'P') {
-          const em = document.createElement('em');
-          em.textContent = child.textContent;
-          const p = document.createElement('p');
-          p.appendChild(em);
-          wrapper.appendChild(p);
-        } else if (child.nodeType === 3 && child.textContent.trim()) {
-          const em = document.createElement('em');
-          em.textContent = child.textContent.trim();
-          const p = document.createElement('p');
-          p.appendChild(em);
-          wrapper.appendChild(p);
-        } else {
-          wrapper.appendChild(child.cloneNode(true));
-        }
-      });
-      bq.replaceWith(wrapper);
-    });
 
-    // Remove breadcrumb <ol> from content (EDS header handles breadcrumbs)
-    element.querySelectorAll('.breadcrumb, .cmp-breadcrumb').forEach((bc) => bc.remove());
-    // Also remove standalone breadcrumb-like <ol> at start of main content
-    const firstOl = element.querySelector('main ol:first-child, .cmp-container > .aem-Grid > ol:first-child');
-    if (firstOl) {
-      const items = firstOl.querySelectorAll('li');
-      const looksLikeBreadcrumb = items.length <= 4 && [...items].some((li) => li.querySelector('a'));
-      if (looksLikeBreadcrumb) firstOl.remove();
-    }
-
-    // Remove non-authorable content: header, footer, mobile nav (from captured DOM)
+  if (hookName === TransformHook.afterTransform) {
+    // Remove header experience fragment -- found as header.experiencefragment.cmp-experiencefragment--header
     WebImporter.DOMUtils.remove(element, [
-      'header.experiencefragment',
-      'footer.experiencefragment',
+      'header.experiencefragment.cmp-experiencefragment--header',
+    ]);
+
+    // Remove footer experience fragment -- found as footer.experiencefragment.cmp-experiencefragment--footer
+    WebImporter.DOMUtils.remove(element, [
+      'footer.experiencefragment.cmp-experiencefragment--footer',
+    ]);
+
+    // Remove mobile navigation toggle and mobile nav -- found as #toggleNav and #mobileNav
+    WebImporter.DOMUtils.remove(element, [
       '#toggleNav',
       '#mobileNav',
-      '.cmp-navigation--mobile',
-      'noscript',
-      'link',
     ]);
-    // Clean up tracking attributes
-    element.querySelectorAll('*').forEach((el) => {
+
+    // Remove remaining iframes, link elements, noscript -- safe non-authorable elements
+    WebImporter.DOMUtils.remove(element, [
+      'iframe',
+      'link',
+      'noscript',
+    ]);
+
+    // Clean data-layer and tracking attributes from all elements
+    element.querySelectorAll('[data-cmp-data-layer-enabled]').forEach((el) => {
       el.removeAttribute('data-cmp-data-layer-enabled');
+    });
+    element.querySelectorAll('[data-cmp-data-layer-name]').forEach((el) => {
       el.removeAttribute('data-cmp-data-layer-name');
+    });
+    element.querySelectorAll('[data-cmp-link-accessibility-enabled]').forEach((el) => {
       el.removeAttribute('data-cmp-link-accessibility-enabled');
+    });
+    element.querySelectorAll('[data-cmp-link-accessibility-text]').forEach((el) => {
       el.removeAttribute('data-cmp-link-accessibility-text');
     });
   }

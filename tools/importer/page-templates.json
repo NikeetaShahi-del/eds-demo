@@ -1,35 +1,32 @@
 {
+  "metadata": {
+    "projectType": "xwalk"
+  },
   "templates": [
     {
       "name": "homepage",
       "urls": [
-        "https://wknd.site/us/en.html",
-        "https://wknd.site/ca/en.html"
+        "https://wknd.site/us/en.html"
       ],
       "description": "WKND homepage with hero carousel, featured articles, adventure cards, and CTA sections",
       "blocks": [
         {
-          "name": "carousel-hero",
+          "name": "carousel",
           "instances": [
-            ".carousel.cmp-carousel--hero"
+            ".carousel.panelcontainer.cmp-carousel--hero"
           ]
         },
         {
-          "name": "hero-featured",
+          "name": "hero",
           "instances": [
-            ".teaser.cmp-teaser--featured"
+            ".teaser.cmp-teaser--featured",
+            ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom"
           ]
         },
         {
-          "name": "cards-article",
+          "name": "cards",
           "instances": [
             ".image-list.list"
-          ]
-        },
-        {
-          "name": "hero-adventure",
-          "instances": [
-            ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom"
           ]
         }
       ],
@@ -37,21 +34,21 @@
         {
           "id": "section-1",
           "name": "Hero Carousel",
-          "selector": ".carousel.cmp-carousel--hero",
+          "selector": ".carousel.panelcontainer.cmp-carousel--hero",
           "style": null,
           "blocks": [
-            "carousel-hero"
+            "carousel"
           ],
           "defaultContent": []
         },
         {
           "id": "section-2",
           "name": "Featured and Recent Articles",
-          "selector": "main.cmp-layout-container--fixed:first-of-type",
+          "selector": "main.container.responsivegrid.cmp-layout-container--fixed",
           "style": null,
           "blocks": [
-            "hero-featured",
-            "cards-article"
+            "hero",
+            "cards"
           ],
           "defaultContent": [
             ".title.cmp-title--underline h2",
@@ -65,17 +62,17 @@
           "selector": ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom",
           "style": null,
           "blocks": [
-            "hero-adventure"
+            "hero"
           ],
           "defaultContent": []
         },
         {
           "id": "section-4",
           "name": "Adventures",
-          "selector": "main.cmp-layout-container--fixed:last-of-type",
+          "selector": "main.container.responsivegrid.cmp-layout-container--fixed:last-of-type",
           "style": null,
           "blocks": [
-            "cards-article"
+            "cards"
           ],
           "defaultContent": [
             ".title h3",
@@ -93,8 +90,18 @@
       ],
       "description": "Magazine landing page listing all magazine articles with teaser cards",
       "blocks": [
-        { "name": "hero-featured", "instances": [".teaser.cmp-teaser--featured"] },
-        { "name": "cards-article", "instances": [".image-list.list"] }
+        {
+          "name": "hero-featured",
+          "instances": [
+            ".teaser.cmp-teaser--featured"
+          ]
+        },
+        {
+          "name": "cards-article",
+          "instances": [
+            ".image-list.list"
+          ]
+        }
       ]
     },
     {
@@ -122,9 +129,24 @@
       ],
       "description": "Adventures landing page with filterable grid of adventure cards",
       "blocks": [
-        { "name": "hero", "instances": [".teaser:not(.cmp-teaser--featured):not(.cmp-teaser--hero):not(.cmp-teaser--list)"] },
-        { "name": "tabs", "instances": [".cmp-tabs"] },
-        { "name": "cards-article", "instances": [".image-list.list"] }
+        {
+          "name": "hero",
+          "instances": [
+            ".teaser:not(.cmp-teaser--featured):not(.cmp-teaser--hero):not(.cmp-teaser--list)"
+          ]
+        },
+        {
+          "name": "tabs",
+          "instances": [
+            ".cmp-tabs"
+          ]
+        },
+        {
+          "name": "cards-article",
+          "instances": [
+            ".image-list.list"
+          ]
+        }
       ]
     },
     {
@@ -165,8 +187,18 @@
       ],
       "description": "Adventure detail page with hero image, itinerary details, activity info, and pricing",
       "blocks": [
-        { "name": "carousel", "instances": [".carousel.cmp-carousel--mini"] },
-        { "name": "tabs", "instances": [".tabs.panelcontainer"] }
+        {
+          "name": "carousel",
+          "instances": [
+            ".carousel.cmp-carousel--mini"
+          ]
+        },
+        {
+          "name": "tabs",
+          "instances": [
+            ".tabs.panelcontainer"
+          ]
+        }
       ]
     },
     {
@@ -177,7 +209,12 @@
       ],
       "description": "Frequently asked questions page with expandable accordion-style Q&A sections",
       "blocks": [
-        { "name": "accordion", "instances": [".accordion.panelcontainer"] }
+        {
+          "name": "accordion",
+          "instances": [
+            ".accordion.panelcontainer"
+          ]
+        }
       ]
     },
     {

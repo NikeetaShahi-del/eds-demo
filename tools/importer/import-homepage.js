@@ -2,10 +2,9 @@
 /* global WebImporter */
 
 // PARSER IMPORTS
-import carouselHeroParser from './parsers/carousel-hero.js';
-import heroFeaturedParser from './parsers/hero-featured.js';
-import cardsArticleParser from './parsers/cards-article.js';
-import heroAdventureParser from './parsers/hero-adventure.js';
+import carouselParser from './parsers/carousel.js';
+import heroParser from './parsers/hero.js';
+import cardsParser from './parsers/cards.js';
 
 // TRANSFORMER IMPORTS
 import wkndCleanupTransformer from './transformers/wknd-cleanup.js';
@@ -13,10 +12,9 @@ import wkndSectionsTransformer from './transformers/wknd-sections.js';
 
 // PARSER REGISTRY
 const parsers = {
-  'carousel-hero': carouselHeroParser,
-  'hero-featured': heroFeaturedParser,
-  'cards-article': cardsArticleParser,
-  'hero-adventure': heroAdventureParser,
+  'carousel': carouselParser,
+  'hero': heroParser,
+  'cards': cardsParser,
 };
 
 // PAGE TEMPLATE CONFIGURATION
@@ -28,37 +26,33 @@ const PAGE_TEMPLATE = {
   ],
   blocks: [
     {
-      name: 'carousel-hero',
-      instances: ['.carousel.cmp-carousel--hero'],
+      name: 'carousel',
+      instances: ['.carousel.panelcontainer.cmp-carousel--hero'],
     },
     {
-      name: 'hero-featured',
-      instances: ['.teaser.cmp-teaser--featured'],
+      name: 'hero',
+      instances: ['.teaser.cmp-teaser--featured', '.teaser.cmp-teaser--hero.cmp-teaser--imagebottom'],
     },
     {
-      name: 'cards-article',
+      name: 'cards',
       instances: ['.image-list.list'],
-    },
-    {
-      name: 'hero-adventure',
-      instances: ['.teaser.cmp-teaser--hero.cmp-teaser--imagebottom'],
     },
   ],
   sections: [
     {
       id: 'section-1',
       name: 'Hero Carousel',
-      selector: '.carousel.cmp-carousel--hero',
+      selector: '.carousel.panelcontainer.cmp-carousel--hero',
       style: null,
-      blocks: ['carousel-hero'],
+      blocks: ['carousel'],
       defaultContent: [],
     },
     {
       id: 'section-2',
       name: 'Featured and Recent Articles',
-      selector: 'main.cmp-layout-container--fixed:first-of-type',
+      selector: 'main.container.responsivegrid.cmp-layout-container--fixed',
       style: null,
-      blocks: ['hero-featured', 'cards-article'],
+      blocks: ['hero', 'cards'],
       defaultContent: ['.title.cmp-title--underline h2', '.button.cmp-button--primary a', '.separator hr'],
     },
     {
@@ -66,15 +60,15 @@ const PAGE_TEMPLATE = {
       name: 'Climbing New Zealand Hero',
       selector: '.teaser.cmp-teaser--hero.cmp-teaser--imagebottom',
       style: null,
-      blocks: ['hero-adventure'],
+      blocks: ['hero'],
       defaultContent: [],
     },
     {
       id: 'section-4',
       name: 'Adventures',
-      selector: 'main.cmp-layout-container--fixed:last-of-type',
+      selector: 'main.container.responsivegrid.cmp-layout-container--fixed:last-of-type',
       style: null,
-      blocks: ['cards-article'],
+      blocks: ['cards'],
       defaultContent: ['.title h3', '.button.cmp-button--primary a', '.separator hr'],
     },
   ],

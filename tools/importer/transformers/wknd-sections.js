@@ -2,32 +2,40 @@
 /* global WebImporter */
 
 /**
- * Transformer: WKND sections. Adds section breaks and section-metadata blocks.
- * Runs in afterTransform only. Uses payload.template.sections from page-templates.json.
+ * Transformer: WKND section breaks.
+ * Inserts <hr> section breaks between the 4 homepage sections based on
+ * template section selectors from page-templates.json. Also inserts
+ * Section Metadata blocks for sections that define a style.
+ *
+ * Sections (from page-templates.json homepage template):
+ *   1. Hero Carousel:                .carousel.panelcontainer.cmp-carousel--hero
+ *   2. Featured and Recent Articles: main.container.responsivegrid.cmp-layout-container--fixed
+ *   3. Climbing New Zealand Hero:    .teaser.cmp-teaser--hero.cmp-teaser--imagebottom
+ *   4. Adventures:                   main.container.responsivegrid.cmp-layout-container--fixed:last-of-type
+ *
+ * All selectors sourced from migration-work/cleaned.html captured DOM.
  */
-const H = { before: 'beforeTransform', after: 'afterTransform' };
+const TransformHook = { beforeTransform: 'beforeTransform', afterTransform: 'afterTransform' };
 
 export default function transform(hookName, element, payload) {
-  if (hookName === H.after) {
-    const { document } = payload;
-    const sections = payload.template && payload.template.sections;
-    if (!sections || sections.length < 2) return;
+  if (hookName === TransformHook.afterTransform) {
+    const { document } = element.ownerDocument ? { document: element.ownerDocument } : { document: element.getRootNode() };
+    const sections = payload && payload.template && payload.template.sections;
 
-    // Process sections in reverse order to avoid index shifting
-    const reversedSections = [...sections].reverse();
+    if (!sections || sections.length < 2) {
+      return;
+    }
 
-    for (const section of reversedSections) {
-      // Try to find the section's first element using the selector(s)
-      const selectors = Array.isArray(section.selector) ? section.selector : [section.selector];
-      let sectionEl = null;
-      for (const sel of selectors) {
-        sectionEl = element.querySelector(sel);
-        if (sectionEl) break;
+    // Process sections in reverse order to avoid DOM position shifts
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const section = sections[i];
+      const sectionEl = element.querySelector(section.selector);
+
+      if (!sectionEl) {
+        continue;
       }
 
-      if (!sectionEl) continue;
-
-      // Add section-metadata block if section has a style
+      // Insert Section Metadata block if section has a style
       if (section.style) {
         const sectionMetadata = WebImporter.Blocks.createBlock(document, {
           name: 'Section Metadata',
@@ -36,8 +44,8 @@ export default function transform(hookName, element, payload) {
         sectionEl.after(sectionMetadata);
       }
 
-      // Add section break (<hr>) before the section element (except first section)
-      if (section.id !== sections[0].id) {
+      // Insert <hr> before each section except the first
+      if (i > 0) {
         const hr = document.createElement('hr');
         sectionEl.before(hr);
       }
