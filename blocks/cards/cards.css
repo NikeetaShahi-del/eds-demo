@@ -1,10 +1,10 @@
-/* Cards - WKND article cards (no border, image + title + description) */
+/* Cards - WKND article/adventure cards (no border, grid layout) */
 .cards > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 24px;
 }
 
@@ -18,7 +18,7 @@
 
 .cards > ul > li img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 200px;
   object-fit: cover;
 }
 
@@ -36,6 +36,7 @@
   font-weight: 600;
   text-transform: uppercase;
   display: block;
+  line-height: 1.4;
 }
 
 .cards .cards-card-body p strong a,
@@ -62,9 +63,10 @@
   font-size: var(--body-font-size-xs);
   color: #696969;
   line-height: 1.5;
+  text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
