@@ -1,11 +1,14 @@
 export default function decorate(block) {
-  const section = block.closest('[data-aue-type="container"]') || block.parentElement;
-  const siblings = section ? section.querySelectorAll(':scope > *:not(style):not(script)') : [];
-  const isOnlyBlock = siblings.length <= 2;
+  const contentDiv = block.querySelector(':scope > div:last-child > div');
+  const hasPreTitle = contentDiv && contentDiv.querySelector(':scope > p:first-child strong');
 
-  if (isOnlyBlock) {
-    block.classList.add('hero-banner');
-  } else {
+  if (hasPreTitle) {
     block.classList.add('hero-featured');
+  } else {
+    block.classList.add('hero-banner');
+    const section = block.closest('[data-aue-type="container"]') || block.parentElement;
+    if (section) {
+      section.classList.add('hero-banner-section');
+    }
   }
 }

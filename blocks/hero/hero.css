@@ -83,8 +83,12 @@
 
 /* ===========================================
    Climbing NZ Banner variant (.hero-banner)
-   Full-width image, content panel 80% width overlapping bottom
+   Full-width image, white panel overlapping bottom with all content inside
    =========================================== */
+.hero.hero-banner {
+  margin: 0;
+}
+
 .hero.hero-banner > div:last-child {
   background-color: var(--background-color);
   padding: 24px;
@@ -96,6 +100,18 @@
   line-height: 1.75;
 }
 
+.hero-banner-section {
+  position: relative;
+}
+
+.hero-banner-section > *:not(.hero) {
+  background-color: var(--background-color);
+  position: relative;
+  z-index: 1;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
 @media (width >= 900px) {
   .hero.hero-banner > div:first-child img {
     height: 520px;
@@ -103,9 +119,17 @@
 
   .hero.hero-banner > div:last-child {
     width: 80%;
-    margin: -80px auto 0;
+    margin: -80px 10% 0;
     padding: 32px 40px;
     position: relative;
     z-index: 1;
+  }
+
+  .hero-banner-section > *:not(.hero) {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }
