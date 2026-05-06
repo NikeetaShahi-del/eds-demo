@@ -126,24 +126,25 @@
   padding: 0 !important;
 }
 
-.hero-banner-section > *:not(.hero) {
+.hero-banner-section > .hero ~ * {
   background-color: var(--background-color);
   padding: 0 24px;
   position: relative;
   z-index: 1;
 }
 
-.hero-banner-section > h1 ~ h1,
-.hero-banner-section > h1 ~ [data-aue-prop="title"] {
+.hero-banner-section > .hero ~ h1,
+.hero-banner-section > .hero ~ [data-aue-prop="title"] {
   font-family: var(--heading-font-family);
   font-weight: 400;
   font-size: var(--heading-font-size-l);
   margin-top: 32px;
+  margin-bottom: 16px;
   padding-bottom: 0;
 }
 
-.hero-banner-section > h1 ~ h1::after,
-.hero-banner-section > h1 ~ [data-aue-prop="title"]::after {
+.hero-banner-section > .hero ~ h1::after,
+.hero-banner-section > .hero ~ [data-aue-prop="title"]::after {
   display: none;
 }
 
@@ -158,18 +159,16 @@
   }
 
   .hero.hero-banner > div:last-child {
-    width: 80%;
-    margin: -80px 10% 0;
+    width: 85%;
+    margin: -80px auto 0 10%;
     padding: 32px 40px;
     position: relative;
     z-index: 1;
   }
 
   .hero-banner-section > .hero ~ * {
-    width: 80%;
-    margin-left: 10% !important;
-    margin-right: 10% !important;
+    margin-left: 10%;
+    margin-right: 5%;
     padding: 0 40px;
-    box-sizing: border-box;
   }
 }
