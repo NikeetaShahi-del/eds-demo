@@ -132,10 +132,16 @@
 }
 
 .hero-banner-section > h1,
-.hero-banner-section > h3 {
+.hero-banner-section > h3,
+.hero-banner-section > [data-aue-prop="title"] {
   font-family: var(--heading-font-family);
   font-weight: 400;
-  margin-top: 24px;
+  margin-top: 32px;
+  padding-top: 16px;
+}
+
+.hero-banner-section .cards > ul {
+  grid-template-columns: repeat(4, 1fr);
 }
 
 @media (width >= 900px) {
