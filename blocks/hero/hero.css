@@ -129,15 +129,22 @@
 .hero-banner-section > *:not(.hero) {
   background-color: var(--background-color);
   padding: 0 24px;
+  position: relative;
+  z-index: 1;
 }
 
-.hero-banner-section > h1,
-.hero-banner-section > h3,
-.hero-banner-section > [data-aue-prop="title"] {
+.hero-banner-section > h1 ~ h1,
+.hero-banner-section > h1 ~ [data-aue-prop="title"] {
   font-family: var(--heading-font-family);
   font-weight: 400;
+  font-size: var(--heading-font-size-l);
   margin-top: 32px;
-  padding-top: 16px;
+  padding-bottom: 0;
+}
+
+.hero-banner-section > h1 ~ h1::after,
+.hero-banner-section > h1 ~ [data-aue-prop="title"]::after {
+  display: none;
 }
 
 .hero-banner-section .cards > ul {
@@ -158,9 +165,11 @@
     z-index: 1;
   }
 
-  .hero-banner-section > *:not(.hero) {
+  .hero-banner-section > .hero ~ * {
     width: 80%;
-    margin-left: 10%;
+    margin-left: 10% !important;
+    margin-right: 10% !important;
     padding: 0 40px;
+    box-sizing: border-box;
   }
 }
