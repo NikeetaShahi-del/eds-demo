@@ -10,15 +10,5 @@ export default function decorate(block) {
     if (section) {
       section.classList.add('hero-banner-section');
     }
-
-    const existingStyle = document.querySelector('link[href*="styles/styles.css"]');
-    const basePath = existingStyle
-      ? existingStyle.href.replace('styles/styles.css', '')
-      : '/';
-
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = `${basePath}styles/next-adventures.css`;
-    document.head.appendChild(link);
   }
 }
