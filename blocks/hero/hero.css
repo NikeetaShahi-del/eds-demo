@@ -107,46 +107,4 @@
   }
 }
 
-/* ===========================================
-   Climbing NZ Banner (.hero-banner)
-   Full-width image, content below with padding
-   =========================================== */
-.hero.hero-banner > div:first-child img {
-  max-height: 400px;
-}
-
-.hero.hero-banner > div:last-child {
-  padding: 14px;
-}
-
-/* Section styling for hero-banner */
-.hero-banner-section > .hero ~ * {
-  padding: 0 14px;
-}
-
-.hero-banner-section > .hero ~ h1,
-.hero-banner-section > .hero ~ [data-aue-prop="title"] {
-  font-family: var(--heading-font-family);
-  font-weight: 400;
-  font-size: 24px;
-  padding-bottom: 0;
-}
-
-.hero-banner-section > .hero ~ h1::after,
-.hero-banner-section > .hero ~ [data-aue-prop="title"]::after {
-  display: none;
-}
-
-.hero-banner-section .cards > ul {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-@media (width >= 900px) {
-  .hero.hero-banner > div:last-child {
-    padding: 14px 24px;
-  }
-
-  .hero-banner-section > .hero ~ * {
-    padding: 0 24px;
-  }
-}
+/* Climbing NZ Banner styles are in /styles/next-adventures.css */

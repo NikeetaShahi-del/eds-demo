@@ -10,5 +10,10 @@ export default function decorate(block) {
     if (section) {
       section.classList.add('hero-banner-section');
     }
+
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/styles/next-adventures.css';
+    document.head.appendChild(link);
   }
 }
