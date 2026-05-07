@@ -109,37 +109,26 @@
 
 /* ===========================================
    Climbing NZ Banner (.hero-banner)
-   Full-width image, section below is white panel
+   Full-width image, content below with padding
    =========================================== */
 .hero.hero-banner > div:first-child img {
-  max-height: 520px;
+  max-height: 400px;
 }
 
 .hero.hero-banner > div:last-child {
-  padding: 24px;
-  background-color: var(--background-color);
+  padding: 14px;
 }
 
-/* Section styling: everything after hero in same panel */
-.hero-banner-section {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
+/* Section styling for hero-banner */
 .hero-banner-section > .hero ~ * {
-  background-color: var(--background-color);
-  padding: 0 24px;
-  position: relative;
-  z-index: 1;
+  padding: 0 14px;
 }
 
 .hero-banner-section > .hero ~ h1,
 .hero-banner-section > .hero ~ [data-aue-prop="title"] {
   font-family: var(--heading-font-family);
   font-weight: 400;
-  font-size: var(--heading-font-size-l);
-  margin-top: 32px;
-  margin-bottom: 16px;
+  font-size: 24px;
   padding-bottom: 0;
 }
 
@@ -153,22 +142,11 @@
 }
 
 @media (width >= 900px) {
-  .hero.hero-banner > div:first-child img {
-    height: 520px;
-    max-height: unset;
-  }
-
   .hero.hero-banner > div:last-child {
-    width: 85%;
-    margin: -80px auto 0 10%;
-    padding: 32px 40px;
-    position: relative;
-    z-index: 1;
+    padding: 14px 24px;
   }
 
   .hero-banner-section > .hero ~ * {
-    margin-left: 10%;
-    margin-right: 5%;
-    padding: 0 40px;
+    padding: 0 24px;
   }
 }
