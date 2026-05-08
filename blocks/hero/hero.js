@@ -12,8 +12,8 @@ export default function decorate(block) {
 
       let sibling = block.nextElementSibling;
       while (sibling) {
-        sibling.style.paddingLeft = '12%';
-        sibling.style.paddingRight = '12%';
+        sibling.style.paddingLeft = '8%';
+        sibling.style.paddingRight = '8%';
         sibling.style.boxSizing = 'border-box';
         sibling = sibling.nextElementSibling;
       }
