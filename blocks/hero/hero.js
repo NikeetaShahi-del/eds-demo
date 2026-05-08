@@ -15,6 +15,16 @@ export default function decorate(block) {
         sibling.style.paddingLeft = '8%';
         sibling.style.paddingRight = '8%';
         sibling.style.boxSizing = 'border-box';
+
+        if (sibling.tagName === 'H1' || sibling.tagName === 'H3') {
+          sibling.style.fontFamily = 'Asar, Georgia, "Times New Roman", Times, serif';
+          sibling.style.fontSize = '24px';
+          sibling.style.fontWeight = '400';
+          sibling.style.marginTop = '24px';
+          sibling.style.marginBottom = '16px';
+          sibling.classList.add('hero-banner-title');
+        }
+
         sibling = sibling.nextElementSibling;
       }
     }
