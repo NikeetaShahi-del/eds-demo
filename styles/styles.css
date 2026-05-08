@@ -296,6 +296,17 @@ main .section .default-content-wrapper h2::after {
   margin-top: 10px;
 }
 
+/* Override for titles inside hero-banner section */
+main .section.hero-banner-section .hero ~ h1[data-aue-prop="title"] {
+  font-size: 24px;
+  padding-bottom: 0;
+  padding-left: 8%;
+}
+
+main .section.hero-banner-section .hero ~ h1[data-aue-prop="title"]::after {
+  display: none;
+}
+
 main .section h3[data-aue-prop="title"] {
   font-family: var(--heading-font-family);
   font-size: var(--heading-font-size-l);
