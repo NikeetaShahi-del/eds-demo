@@ -1,6 +1,5 @@
 /* Tabs Adventure — Category-filtered adventure listing
-   Source: 6 tabs (All, Climbing, Cycling, Skiing, Surfing, Travel)
-   Cards in tab panels: 4 columns, ~260px each, 200px image height
+   Source: 6 tabs, 4-column card grid in each panel
    Reference: docs/context.md */
 
 .tabs-adventure .tabs-adventure-list {
@@ -9,6 +8,7 @@
   max-width: 100%;
   overflow-x: auto;
   border-bottom: 1px solid #dadada;
+  margin-bottom: 24px;
 }
 
 .tabs-adventure .tabs-adventure-list button {
@@ -21,7 +21,9 @@
   background-color: transparent;
   color: #222;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   line-height: unset;
   text-align: initial;
   cursor: pointer;
@@ -44,7 +46,7 @@
 
 .tabs-adventure .tabs-adventure-panel {
   margin-top: 0;
-  padding: 24px 0;
+  padding: 0;
   border: none;
   overflow: auto;
 }
@@ -53,42 +55,54 @@
   display: none;
 }
 
-.tabs-adventure .tabs-adventure-panel ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* Card grid inside tab panels */
+.tabs-adventure .adventure-card-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 24px 16px;
 }
 
-.tabs-adventure .tabs-adventure-panel li {
-  background: #fff;
+.tabs-adventure .adventure-card {
+  overflow: hidden;
 }
 
-.tabs-adventure .tabs-adventure-panel li img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
+.tabs-adventure .adventure-card-title {
+  margin: 8px 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.tabs-adventure .tabs-adventure-panel li a {
+.tabs-adventure .adventure-card-title a {
   color: #222;
-  font-weight: 600;
+  text-decoration: none;
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  font-weight: inherit;
+  display: inline;
 }
 
-.tabs-adventure .tabs-adventure-panel li p {
-  font-size: 14px;
+.tabs-adventure .adventure-card-title a:hover {
+  text-decoration: underline;
+}
+
+.tabs-adventure .adventure-card-desc {
+  margin: 0;
+  font-size: 12px;
   color: #555;
-  margin: 4px 0;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
-@media (min-width: 900px) {
-  .tabs-adventure .tabs-adventure-panel ul {
+@media (width >= 900px) {
+  .tabs-adventure .adventure-card-grid {
     grid-template-columns: repeat(4, 1fr);
-  }
-
-  .tabs-adventure .tabs-adventure-panel li img {
-    height: 200px;
   }
 }
