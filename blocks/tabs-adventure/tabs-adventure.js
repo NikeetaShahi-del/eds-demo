@@ -15,19 +15,18 @@ function buildCardGrid(panel) {
     if (pp && pp !== contentDiv) pp.remove();
   }
 
-  const paragraphs = [...contentDiv.querySelectorAll(':scope > p, :scope > [data-richtext-prop] p')];
   const allP = [...contentDiv.querySelectorAll('p')];
 
   const cards = [];
   let i = 0;
   while (i < allP.length) {
     const p = allP[i];
-
     const damLink = p.querySelector('a[href*="/content/dam/"]');
+    const titleLink = p.querySelector('strong > a');
+
     if (damLink) {
       const damPath = damLink.getAttribute('href');
       i += 1;
-
       const titleP = allP[i];
       const descP = allP[i + 1];
       const link = titleP ? titleP.querySelector('a') : null;
@@ -62,16 +61,11 @@ function buildCardGrid(panel) {
         } else {
           i += 1;
         }
-
         cards.push(card);
       } else {
         i += 1;
       }
-      continue;
-    }
-
-    const titleLink = p.querySelector('strong > a');
-    if (titleLink) {
+    } else if (titleLink) {
       const card = document.createElement('div');
       card.className = 'adventure-card';
 
@@ -93,12 +87,10 @@ function buildCardGrid(panel) {
       } else {
         i += 1;
       }
-
       cards.push(card);
-      continue;
+    } else {
+      i += 1;
     }
-
-    i += 1;
   }
 
   contentDiv.innerHTML = '';
