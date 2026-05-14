@@ -28,6 +28,14 @@ This file documents the exact design specifications extracted from the source si
 - Do NOT assume layouts from page names. Always inspect the source.
 - Different pages use different hero layouts even for similar-looking blocks.
 
+### Mistake 5: Block name in JCR must match the variant CSS class
+- The `name` property on a JCR block node determines the CSS class EDS renders.
+- `name="Hero"` renders as `.hero` class → uses `blocks/hero/hero.css`
+- `name="Hero Adventure"` renders as `.hero-adventure` class → uses `blocks/hero-adventure/hero-adventure.css`
+- `name="Cards Team"` renders as `.cards-team` class → uses `blocks/cards-team/cards-team.css`
+- If you create a block with the wrong name, it gets the wrong CSS even if the content is correct.
+- Always match the JCR block `name` to the intended variant folder name (with proper casing: "Hero Adventure" not "hero-adventure").
+
 ---
 
 ## Page-by-Page Design Specifications
