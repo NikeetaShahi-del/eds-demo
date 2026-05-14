@@ -264,6 +264,76 @@ Before writing any block CSS, read `docs/context.md` which contains exact comput
 
 ---
 
+## ⚠️ Category Page Migration Mistakes (Magazine, Adventures, FAQs, About Us)
+
+### 20. Block `name` in JCR must match the variant CSS class
+
+The `name` property on a JCR block determines the CSS class EDS renders. Using the wrong name applies the wrong CSS.
+
+- ✅ `name="Hero Adventure"` → renders as `.hero-adventure` → correct column layout
+- ❌ `name="Hero"` → renders as `.hero` → wrong side-by-side layout
+- ✅ `name="Cards Team"` → renders as `.cards-team` → circular portraits
+- ❌ `name="Cards"` → renders as `.cards` → standard rectangular cards
+
+**Always match the JCR block `name` to the intended variant folder name.**
+
+### 21. Adventures page needs Tabs block, not flat Cards
+
+The Adventures page has tabbed navigation (ALL, CLIMBING, CYCLING, etc.) with cards inside each tab. Creating a flat Cards block without tabs is wrong — must create a Tabs Adventure block with tab items.
+
+### 22. DAM image paths in richtext render as text, not images
+
+Storing `/content/dam/eds-demo/image.jpeg` as plain text in richtext renders as plain text. To get it to render as a link (that JS can parse), store it as `<a href="/content/dam/eds-demo/image.jpeg">img</a>`.
+
+Even then, using the raw DAM path as `img.src` may not work in AEM author. Use the rendition URL:
+```
+/content/dam/eds-demo/image.jpeg/_jcr_content/renditions/cq5dam.web.1280.1280.jpeg
+```
+
+### 23. Upload ALL referenced images to DAM before creating content
+
+Missing DAM images cause:
+- `<a>` links showing path text instead of `<picture>` for `image@reference` fields
+- 404 errors for dynamically created `<img>` elements
+
+**Checklist before creating page content:**
+1. List all images referenced in the source page
+2. Check which already exist in DAM
+3. Download and upload ALL missing images
+4. Verify each upload returns HTTP 200
+
+### 24. Sling `:order` requires careful sequencing
+
+The `:order=after {nodeName}` parameter is relative to current sibling order, not absolute. When inserting multiple nodes, order them by moving existing nodes, not just the new ones.
+
+**Pattern:** Create all nodes first, then fix order as a separate step:
+```bash
+# After creating all nodes, reorder from bottom up
+curl --data-urlencode ":order=after description" "$AEM_HOST/path/accordion"
+```
+
+### 25. Always migrate ALL visible content, not just blocks
+
+When migrating a page, include:
+- ✅ Page title (H1)
+- ✅ Hero/featured images
+- ✅ Description/intro paragraphs
+- ✅ Blocks (cards, accordions, tabs, etc.)
+- ✅ Contact info / sidebar content
+- ✅ Page metadata (title, description)
+
+Missing the hero image and description paragraph on the FAQs page was a mistake. Always compare against the source page section by section.
+
+### 26. Verify every page against source after pushing to AEM
+
+After pushing JCR content, always:
+1. Hard-refresh the page in AEM author
+2. Compare side-by-side with the source page
+3. Check: images load, text content matches, layout is correct, all sections present
+4. Document any discrepancies before moving to the next page
+
+---
+
 ## Quick Reference: Complete Page Migration Steps
 
 1. **Create page node** on AEM author (with `jcr:content`)
