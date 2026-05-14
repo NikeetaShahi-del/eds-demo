@@ -1,0 +1,66 @@
+/* Cards Team — Contributor/guide profile grid
+   Source: circular portraits, 4 columns (contributors), 3 columns (guides)
+   Name as H3, role as H5, social icons inline
+   Reference: docs/context.md */
+
+.cards-team > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.cards-team > ul > li {
+  background-color: var(--background-color, #fff);
+  text-align: center;
+  border: none;
+}
+
+.cards-team .cards-team-card-body {
+  margin: 16px;
+}
+
+.cards-team .cards-team-card-image {
+  line-height: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.cards-team > ul > li img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.cards-team h3 {
+  font-family: Asar, Georgia, "Times New Roman", Times, serif;
+  margin-bottom: 4px;
+}
+
+.cards-team h5 {
+  font-weight: 400;
+  color: #666;
+  margin-top: 0;
+}
+
+.cards-team .cards-team-card-body a {
+  display: inline-block;
+  margin: 0 6px;
+  color: #222;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+@media (min-width: 900px) {
+  .cards-team > ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .cards-team > ul > li img {
+    width: 180px;
+    height: 180px;
+  }
+}

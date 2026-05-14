@@ -32,6 +32,12 @@
     ]
   },
   {
+    "id": "accordion-faq",
+    "components": [
+      "accordion-faq-item"
+    ]
+  },
+  {
     "id": "accordion",
     "components": [
       "accordion-item"
@@ -39,6 +45,12 @@
   },
   {
     "id": "cards-article",
+    "components": [
+      "card"
+    ]
+  },
+  {
+    "id": "cards-team",
     "components": [
       "card"
     ]
@@ -98,6 +110,12 @@
     "id": "table-4-columns",
     "components": [
       "table-col-4"
+    ]
+  },
+  {
+    "id": "tabs-adventure",
+    "components": [
+      "tabs-adventure-item"
     ]
   },
   {

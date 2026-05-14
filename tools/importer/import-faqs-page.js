@@ -1,41 +1,56 @@
 /* eslint-disable */
 /* global WebImporter */
 
-import accordionParser from "./parsers/accordion.js";
+// PARSER IMPORTS
+import accordionFaqParser from './parsers/accordion-faq.js';
+
+// TRANSFORMER IMPORTS
 import wkndCleanupTransformer from './transformers/wknd-cleanup.js';
-import wkndSectionsTransformer from './transformers/wknd-sections.js';
 
+// PARSER REGISTRY
 const parsers = {
-  "accordion": accordionParser,
+  'accordion-faq': accordionFaqParser,
 };
 
+// PAGE TEMPLATE CONFIGURATION
 const PAGE_TEMPLATE = {
-  "name": "faqs-page",
-  "urls": [
-    "https://wknd.site/us/en/faqs.html",
-    "https://wknd.site/ca/en/faqs.html"
+  name: 'faqs-page',
+  description: 'Frequently asked questions page with expandable accordion-style Q&A sections',
+  urls: [
+    'https://wknd.site/us/en/faqs.html',
+    'https://wknd.site/ca/en/faqs.html',
   ],
-  "description": "Frequently asked questions page with expandable accordion-style Q&A sections",
-  "blocks": [
+  blocks: [
     {
-      "name": "accordion",
-      "instances": [
-        ".accordion.panelcontainer"
-      ]
-    }
-  ]
+      name: 'accordion-faq',
+      instances: ['.accordion.panelcontainer'],
+    },
+  ],
+  sections: [
+    {
+      id: 'section-1',
+      name: 'FAQ Content',
+      selector: 'main.container.responsivegrid.cmp-layout-container--fixed',
+      style: null,
+      blocks: ['accordion-faq'],
+      defaultContent: ['.title h1', '.image.cmp-image img', '.text p'],
+    },
+  ],
 };
 
+// TRANSFORMER REGISTRY
 const transformers = [
   wkndCleanupTransformer,
-  ...(PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [wkndSectionsTransformer] : []),
 ];
 
 function executeTransformers(hookName, element, payload) {
   const enhancedPayload = { ...payload, template: PAGE_TEMPLATE };
   transformers.forEach((transformerFn) => {
-    try { transformerFn.call(null, hookName, element, enhancedPayload); }
-    catch (e) { console.error('Transformer failed:', e); }
+    try {
+      transformerFn.call(null, hookName, element, enhancedPayload);
+    } catch (e) {
+      console.error(`Transformer failed at ${hookName}:`, e);
+    }
   });
 }
 
@@ -44,11 +59,20 @@ function findBlocksOnPage(document, template) {
   template.blocks.forEach((blockDef) => {
     blockDef.instances.forEach((selector) => {
       const elements = document.querySelectorAll(selector);
+      if (elements.length === 0) {
+        console.warn(`Block "${blockDef.name}" selector not found: ${selector}`);
+      }
       elements.forEach((element) => {
-        pageBlocks.push({ name: blockDef.name, selector, element });
+        pageBlocks.push({
+          name: blockDef.name,
+          selector,
+          element,
+          section: blockDef.section || null,
+        });
       });
     });
   });
+  console.log(`Found ${pageBlocks.length} block instances on page`);
   return pageBlocks;
 }
 
@@ -63,8 +87,13 @@ export default {
     pageBlocks.forEach((block) => {
       const parser = parsers[block.name];
       if (parser) {
-        try { parser(block.element, { document, url, params }); }
-        catch (e) { console.error('Parser failed:', e); }
+        try {
+          parser(block.element, { document, url, params });
+        } catch (e) {
+          console.error(`Failed to parse ${block.name} (${block.selector}):`, e);
+        }
+      } else {
+        console.warn(`No parser found for block: ${block.name}`);
       }
     });
 
@@ -77,9 +106,17 @@ export default {
     WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
 
     const path = WebImporter.FileUtils.sanitizePath(
-      new URL(params.originalURL).pathname.replace(/\/$/, '').replace(/\.html$/, '')
+      new URL(params.originalURL).pathname.replace(/\/$/, '').replace(/\.html$/, ''),
     );
 
-    return [{ element: main, path, report: { title: document.title, template: PAGE_TEMPLATE.name } }];
+    return [{
+      element: main,
+      path,
+      report: {
+        title: document.title,
+        template: PAGE_TEMPLATE.name,
+        blocks: pageBlocks.map((b) => b.name),
+      },
+    }];
   },
 };

@@ -41,38 +41,43 @@ var CustomImportScript = (() => {
     default: () => import_faqs_page_default
   });
 
-  // tools/importer/parsers/accordion.js
+  // tools/importer/parsers/accordion-faq.js
   function parse(element, { document }) {
     const items = element.querySelectorAll(".cmp-accordion__item");
     const cells = [];
     items.forEach((item) => {
-      const header = item.querySelector(".cmp-accordion__title");
-      const panel = item.querySelector(".cmp-accordion__panel");
-      const headerCell = document.createDocumentFragment();
-      headerCell.appendChild(document.createComment(" field:summary "));
-      if (header) {
+      const titleSpan = item.querySelector(".cmp-accordion__title");
+      const summaryCell = document.createDocumentFragment();
+      summaryCell.appendChild(document.createComment(" field:summary "));
+      if (titleSpan) {
         const p = document.createElement("p");
         const strong = document.createElement("strong");
-        strong.textContent = header.textContent.trim();
+        strong.textContent = titleSpan.textContent.trim();
         p.appendChild(strong);
-        headerCell.appendChild(p);
+        summaryCell.appendChild(p);
       }
-      const bodyCell = document.createDocumentFragment();
-      bodyCell.appendChild(document.createComment(" field:text "));
+      const panel = item.querySelector(".cmp-accordion__panel");
+      const textCell = document.createDocumentFragment();
+      textCell.appendChild(document.createComment(" field:text "));
       if (panel) {
-        const content = panel.querySelectorAll("p, h1, h2, h3, h4, h5, h6, ul, ol");
-        content.forEach((el) => {
-          bodyCell.appendChild(el.cloneNode(true));
+        const contentElements = panel.querySelectorAll(".cmp-text p, .cmp-text h1, .cmp-text h2, .cmp-text h3, .cmp-text h4, .cmp-text h5, .cmp-text h6, .cmp-text ul, .cmp-text ol");
+        contentElements.forEach((el) => {
+          if (el.textContent.trim().length > 0) {
+            textCell.appendChild(el.cloneNode(true));
+          }
         });
-        if (bodyCell.childNodes.length === 0) {
-          const p = document.createElement("p");
-          p.textContent = panel.textContent.trim();
-          bodyCell.appendChild(p);
+        if (textCell.childNodes.length === 1) {
+          const fallbackText = panel.textContent.trim();
+          if (fallbackText) {
+            const p = document.createElement("p");
+            p.textContent = fallbackText;
+            textCell.appendChild(p);
+          }
         }
       }
-      cells.push([headerCell, bodyCell]);
+      cells.push([summaryCell, textCell]);
     });
-    const block = WebImporter.Blocks.createBlock(document, { name: "accordion", cells });
+    const block = WebImporter.Blocks.createBlock(document, { name: "accordion-faq", cells });
     element.replaceWith(block);
   }
 
@@ -118,59 +123,36 @@ var CustomImportScript = (() => {
     }
   }
 
-  // tools/importer/transformers/wknd-sections.js
-  var TransformHook2 = { beforeTransform: "beforeTransform", afterTransform: "afterTransform" };
-  function transform2(hookName, element, payload) {
-    if (hookName === TransformHook2.afterTransform) {
-      const { document } = element.ownerDocument ? { document: element.ownerDocument } : { document: element.getRootNode() };
-      const sections = payload && payload.template && payload.template.sections;
-      if (!sections || sections.length < 2) {
-        return;
-      }
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        const sectionEl = element.querySelector(section.selector);
-        if (!sectionEl) {
-          continue;
-        }
-        if (section.style) {
-          const sectionMetadata = WebImporter.Blocks.createBlock(document, {
-            name: "Section Metadata",
-            cells: { style: section.style }
-          });
-          sectionEl.after(sectionMetadata);
-        }
-        if (i > 0) {
-          const hr = document.createElement("hr");
-          sectionEl.before(hr);
-        }
-      }
-    }
-  }
-
   // tools/importer/import-faqs-page.js
   var parsers = {
-    "accordion": parse
+    "accordion-faq": parse
   };
   var PAGE_TEMPLATE = {
-    "name": "faqs-page",
-    "urls": [
+    name: "faqs-page",
+    description: "Frequently asked questions page with expandable accordion-style Q&A sections",
+    urls: [
       "https://wknd.site/us/en/faqs.html",
       "https://wknd.site/ca/en/faqs.html"
     ],
-    "description": "Frequently asked questions page with expandable accordion-style Q&A sections",
-    "blocks": [
+    blocks: [
       {
-        "name": "accordion",
-        "instances": [
-          ".accordion.panelcontainer"
-        ]
+        name: "accordion-faq",
+        instances: [".accordion.panelcontainer"]
+      }
+    ],
+    sections: [
+      {
+        id: "section-1",
+        name: "FAQ Content",
+        selector: "main.container.responsivegrid.cmp-layout-container--fixed",
+        style: null,
+        blocks: ["accordion-faq"],
+        defaultContent: [".title h1", ".image.cmp-image img", ".text p"]
       }
     ]
   };
   var transformers = [
-    transform,
-    ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform2] : []
+    transform
   ];
   function executeTransformers(hookName, element, payload) {
     const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });
@@ -178,7 +160,7 @@ var CustomImportScript = (() => {
       try {
         transformerFn.call(null, hookName, element, enhancedPayload);
       } catch (e) {
-        console.error("Transformer failed:", e);
+        console.error(`Transformer failed at ${hookName}:`, e);
       }
     });
   }
@@ -187,11 +169,20 @@ var CustomImportScript = (() => {
     template.blocks.forEach((blockDef) => {
       blockDef.instances.forEach((selector) => {
         const elements = document.querySelectorAll(selector);
+        if (elements.length === 0) {
+          console.warn(`Block "${blockDef.name}" selector not found: ${selector}`);
+        }
         elements.forEach((element) => {
-          pageBlocks.push({ name: blockDef.name, selector, element });
+          pageBlocks.push({
+            name: blockDef.name,
+            selector,
+            element,
+            section: blockDef.section || null
+          });
         });
       });
     });
+    console.log(`Found ${pageBlocks.length} block instances on page`);
     return pageBlocks;
   }
   var import_faqs_page_default = {
@@ -206,8 +197,10 @@ var CustomImportScript = (() => {
           try {
             parser(block.element, { document, url, params });
           } catch (e) {
-            console.error("Parser failed:", e);
+            console.error(`Failed to parse ${block.name} (${block.selector}):`, e);
           }
+        } else {
+          console.warn(`No parser found for block: ${block.name}`);
         }
       });
       executeTransformers("afterTransform", main, payload);
@@ -219,7 +212,15 @@ var CustomImportScript = (() => {
       const path = WebImporter.FileUtils.sanitizePath(
         new URL(params.originalURL).pathname.replace(/\/$/, "").replace(/\.html$/, "")
       );
-      return [{ element: main, path, report: { title: document.title, template: PAGE_TEMPLATE.name } }];
+      return [{
+        element: main,
+        path,
+        report: {
+          title: document.title,
+          template: PAGE_TEMPLATE.name,
+          blocks: pageBlocks.map((b) => b.name)
+        }
+      }];
     }
   };
   return __toCommonJS(import_faqs_page_exports);

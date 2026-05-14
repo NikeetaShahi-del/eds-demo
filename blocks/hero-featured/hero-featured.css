@@ -1,9 +1,6 @@
-/* Hero Featured - WKND featured article teaser (side-by-side layout) */
-.hero-featured-container .hero-featured-wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
+/* Hero Featured — Magazine featured article teaser
+   Source: text LEFT (flex:1 ~30%), image RIGHT (flex:2 ~60%)
+   Reference: docs/context.md */
 
 .hero-featured {
   display: flex;
@@ -31,37 +28,35 @@
   padding: 24px 0;
 }
 
-.hero-featured > div:last-child > div {
-  max-width: 100%;
-}
-
 .hero-featured h2 {
   margin-top: 0.4em;
-  font-size: var(--heading-font-size-l);
+  font-family: Asar, Georgia, "Times New Roman", Times, serif;
+  font-size: 28px;
 }
 
 .hero-featured p:first-child {
   font-weight: 700;
   text-transform: uppercase;
-  font-size: var(--body-font-size-xs);
+  font-size: 12px;
   letter-spacing: 0.5px;
   margin-bottom: 0;
 }
 
-.hero-featured a.button:any-link {
-  background-color: var(--accent-color);
-  color: var(--text-color);
+.hero-featured a:any-link {
+  color: #222;
+  font-weight: 600;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   .hero-featured {
-    flex-direction: row-reverse;
-    gap: 40px;
+    flex-direction: row;
+    gap: 0;
     align-items: stretch;
   }
 
   .hero-featured > div:first-child {
     flex: 2;
+    order: 2;
   }
 
   .hero-featured > div:first-child img {
@@ -71,12 +66,13 @@
 
   .hero-featured > div:last-child {
     flex: 1;
+    order: 1;
     display: flex;
     align-items: center;
-    padding: 40px 0;
+    padding: 63px 36px 36px;
   }
 
   .hero-featured h2 {
-    font-size: var(--heading-font-size-xl);
+    font-size: 36px;
   }
 }

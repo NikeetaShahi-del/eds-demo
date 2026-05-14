@@ -1,14 +1,12 @@
-/* Hero Adventure - WKND Climbing NZ style hero with text + image */
-.hero-adventure-container .hero-adventure-wrapper {
-  max-width: unset;
-  padding: 0;
-}
+/* Hero Adventure — Adventures page hero teaser
+   Source: flex-direction column-reverse — full-width image on TOP, content panel BELOW
+   Image: 400px height, object-fit cover
+   Reference: docs/context.md */
 
 .hero-adventure {
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 400px;
 }
 
 .hero-adventure > div:first-child picture {
@@ -18,56 +16,41 @@
 
 .hero-adventure > div:first-child img {
   width: 100%;
-  height: 100%;
+  height: 300px;
   object-fit: cover;
 }
 
 .hero-adventure > div:last-child {
-  padding: 24px;
-}
-
-.hero-adventure > div:last-child > div {
-  max-width: 600px;
+  padding: 24px 14px;
 }
 
 .hero-adventure h2 {
   margin-top: 0;
-  font-size: var(--heading-font-size-l);
+  font-family: Asar, Georgia, "Times New Roman", Times, serif;
+  font-size: 28px;
 }
 
 .hero-adventure p {
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
   line-height: 1.75;
 }
 
-.hero-adventure a.button:any-link {
-  background-color: var(--accent-color);
-  color: var(--text-color);
-}
-
-@media (width >= 900px) {
-  .hero-adventure {
-    flex-direction: row;
-    min-height: 500px;
-  }
-
-  .hero-adventure > div:first-child {
-    flex: 1.5;
-    order: 2;
-  }
-
+@media (min-width: 900px) {
   .hero-adventure > div:first-child img {
-    min-height: 500px;
+    height: 450px;
   }
 
   .hero-adventure > div:last-child {
-    flex: 1;
-    order: 1;
-    display: flex;
-    align-items: center;
-    padding: 40px 60px;
+    background: #fff;
+    width: 65%;
+    margin-left: 12%;
+    margin-top: -120px;
+    position: relative;
+    z-index: 1;
+    padding: 36px 48px;
   }
 
   .hero-adventure h2 {
-    font-size: var(--heading-font-size-xl);
+    font-size: 36px;
   }
 }

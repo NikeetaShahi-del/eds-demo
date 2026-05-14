@@ -217,24 +217,46 @@ var CustomImportScript = (() => {
     "cards-article": parse2
   };
   var PAGE_TEMPLATE = {
-    "name": "magazine-listing",
-    "urls": [
+    name: "magazine-listing",
+    description: "Magazine landing page listing all magazine articles with teaser cards",
+    urls: [
       "https://wknd.site/us/en/magazine.html",
       "https://wknd.site/ca/en/magazine.html"
     ],
-    "description": "Magazine landing page listing all magazine articles with teaser cards",
-    "blocks": [
+    blocks: [
       {
-        "name": "hero-featured",
-        "instances": [
-          ".teaser.cmp-teaser--featured"
-        ]
+        name: "hero-featured",
+        instances: [".teaser.cmp-teaser--featured"]
       },
       {
-        "name": "cards-article",
-        "instances": [
-          ".image-list.list"
-        ]
+        name: "cards-article",
+        instances: [".image-list.list"]
+      }
+    ],
+    sections: [
+      {
+        id: "section-1",
+        name: "Magazine Title and Featured Article",
+        selector: "main .cmp-container > .aem-Grid",
+        style: null,
+        blocks: ["hero-featured"],
+        defaultContent: [".title h1"]
+      },
+      {
+        id: "section-2",
+        name: "All Articles Grid",
+        selector: ".image-list.list",
+        style: null,
+        blocks: ["cards-article"],
+        defaultContent: [".title.cmp-title--underline h2"]
+      },
+      {
+        id: "section-3",
+        name: "Members Only",
+        selector: ".teaser.cmp-teaser--list",
+        style: null,
+        blocks: ["cards-article"],
+        defaultContent: [".title.cmp-title--underline h2", ".text p", ".separator hr"]
       }
     ]
   };
@@ -248,7 +270,7 @@ var CustomImportScript = (() => {
       try {
         transformerFn.call(null, hookName, element, enhancedPayload);
       } catch (e) {
-        console.error("Transformer failed:", e);
+        console.error(`Transformer failed at ${hookName}:`, e);
       }
     });
   }
@@ -257,11 +279,20 @@ var CustomImportScript = (() => {
     template.blocks.forEach((blockDef) => {
       blockDef.instances.forEach((selector) => {
         const elements = document.querySelectorAll(selector);
+        if (elements.length === 0) {
+          console.warn(`Block "${blockDef.name}" selector not found: ${selector}`);
+        }
         elements.forEach((element) => {
-          pageBlocks.push({ name: blockDef.name, selector, element });
+          pageBlocks.push({
+            name: blockDef.name,
+            selector,
+            element,
+            section: blockDef.section || null
+          });
         });
       });
     });
+    console.log(`Found ${pageBlocks.length} block instances on page`);
     return pageBlocks;
   }
   var import_magazine_listing_default = {
@@ -276,8 +307,10 @@ var CustomImportScript = (() => {
           try {
             parser(block.element, { document, url, params });
           } catch (e) {
-            console.error("Parser failed:", e);
+            console.error(`Failed to parse ${block.name} (${block.selector}):`, e);
           }
+        } else {
+          console.warn(`No parser found for block: ${block.name}`);
         }
       });
       executeTransformers("afterTransform", main, payload);
@@ -289,7 +322,15 @@ var CustomImportScript = (() => {
       const path = WebImporter.FileUtils.sanitizePath(
         new URL(params.originalURL).pathname.replace(/\/$/, "").replace(/\.html$/, "")
       );
-      return [{ element: main, path, report: { title: document.title, template: PAGE_TEMPLATE.name } }];
+      return [{
+        element: main,
+        path,
+        report: {
+          title: document.title,
+          template: PAGE_TEMPLATE.name,
+          blocks: pageBlocks.map((b) => b.name)
+        }
+      }];
     }
   };
   return __toCommonJS(import_magazine_listing_exports);

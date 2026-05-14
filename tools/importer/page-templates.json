@@ -12,22 +12,15 @@
       "blocks": [
         {
           "name": "carousel",
-          "instances": [
-            ".carousel.panelcontainer.cmp-carousel--hero"
-          ]
+          "instances": [".carousel.panelcontainer.cmp-carousel--hero"]
         },
         {
           "name": "hero",
-          "instances": [
-            ".teaser.cmp-teaser--featured",
-            ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom"
-          ]
+          "instances": [".teaser.cmp-teaser--featured", ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom"]
         },
         {
           "name": "cards",
-          "instances": [
-            ".image-list.list"
-          ]
+          "instances": [".image-list.list"]
         }
       ],
       "sections": [
@@ -36,9 +29,7 @@
           "name": "Hero Carousel",
           "selector": ".carousel.panelcontainer.cmp-carousel--hero",
           "style": null,
-          "blocks": [
-            "carousel"
-          ],
+          "blocks": ["carousel"],
           "defaultContent": []
         },
         {
@@ -46,24 +37,15 @@
           "name": "Featured and Recent Articles",
           "selector": "main.container.responsivegrid.cmp-layout-container--fixed",
           "style": null,
-          "blocks": [
-            "hero",
-            "cards"
-          ],
-          "defaultContent": [
-            ".title.cmp-title--underline h2",
-            ".button.cmp-button--primary a",
-            ".separator hr"
-          ]
+          "blocks": ["hero", "cards"],
+          "defaultContent": [".title.cmp-title--underline h2", ".button.cmp-button--primary a", ".separator hr"]
         },
         {
           "id": "section-3",
           "name": "Climbing New Zealand Hero",
           "selector": ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom",
           "style": null,
-          "blocks": [
-            "hero"
-          ],
+          "blocks": ["hero"],
           "defaultContent": []
         },
         {
@@ -71,14 +53,8 @@
           "name": "Adventures",
           "selector": "main.container.responsivegrid.cmp-layout-container--fixed:last-of-type",
           "style": null,
-          "blocks": [
-            "cards"
-          ],
-          "defaultContent": [
-            ".title h3",
-            ".button.cmp-button--primary a",
-            ".separator hr"
-          ]
+          "blocks": ["cards"],
+          "defaultContent": [".title h3", ".button.cmp-button--primary a", ".separator hr"]
         }
       ]
     },
@@ -92,15 +68,37 @@
       "blocks": [
         {
           "name": "hero-featured",
-          "instances": [
-            ".teaser.cmp-teaser--featured"
-          ]
+          "instances": [".teaser.cmp-teaser--featured"]
         },
         {
           "name": "cards-article",
-          "instances": [
-            ".image-list.list"
-          ]
+          "instances": [".image-list.list"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Magazine Title and Featured Article",
+          "selector": "main .cmp-container > .aem-Grid",
+          "style": null,
+          "blocks": ["hero-featured"],
+          "defaultContent": [".title h1"]
+        },
+        {
+          "id": "section-2",
+          "name": "All Articles Grid",
+          "selector": ".image-list.list",
+          "style": null,
+          "blocks": ["cards-article"],
+          "defaultContent": [".title.cmp-title--underline h2"]
+        },
+        {
+          "id": "section-3",
+          "name": "Members Only",
+          "selector": ".teaser.cmp-teaser--list",
+          "style": null,
+          "blocks": ["cards-article"],
+          "defaultContent": [".title.cmp-title--underline h2", ".text p", ".separator hr"]
         }
       ]
     },
@@ -127,25 +125,41 @@
         "https://wknd.site/us/en/adventures.html",
         "https://wknd.site/ca/en/adventures.html"
       ],
-      "description": "Adventures landing page with filterable grid of adventure cards",
+      "description": "Adventures landing page with hero teaser and tabbed adventure listing",
       "blocks": [
         {
-          "name": "hero",
-          "instances": [
-            ".teaser:not(.cmp-teaser--featured):not(.cmp-teaser--hero):not(.cmp-teaser--list)"
-          ]
+          "name": "hero-adventure",
+          "instances": [".teaser:not(.cmp-teaser--featured):not(.cmp-teaser--hero):not(.cmp-teaser--list)"]
         },
         {
-          "name": "tabs",
-          "instances": [
-            ".cmp-tabs"
-          ]
+          "name": "tabs-adventure",
+          "instances": [".tabs.panelcontainer"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Page Title",
+          "selector": ".title h1",
+          "style": null,
+          "blocks": [],
+          "defaultContent": [".title h1"]
         },
         {
-          "name": "cards-article",
-          "instances": [
-            ".image-list.list"
-          ]
+          "id": "section-2",
+          "name": "Hero Adventure Teaser",
+          "selector": ".teaser:not(.cmp-teaser--featured):not(.cmp-teaser--hero):not(.cmp-teaser--list)",
+          "style": null,
+          "blocks": ["hero-adventure"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-3",
+          "name": "Current Adventures Tabs",
+          "selector": ".tabs.panelcontainer",
+          "style": null,
+          "blocks": ["tabs-adventure"],
+          "defaultContent": [".title.cmp-title--underline h2", ".separator hr"]
         }
       ]
     },
@@ -189,15 +203,11 @@
       "blocks": [
         {
           "name": "carousel",
-          "instances": [
-            ".carousel.cmp-carousel--mini"
-          ]
+          "instances": [".carousel.cmp-carousel--mini"]
         },
         {
           "name": "tabs",
-          "instances": [
-            ".tabs.panelcontainer"
-          ]
+          "instances": [".tabs.panelcontainer"]
         }
       ]
     },
@@ -210,10 +220,18 @@
       "description": "Frequently asked questions page with expandable accordion-style Q&A sections",
       "blocks": [
         {
-          "name": "accordion",
-          "instances": [
-            ".accordion.panelcontainer"
-          ]
+          "name": "accordion-faq",
+          "instances": [".accordion.panelcontainer"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "FAQ Content",
+          "selector": "main.container.responsivegrid.cmp-layout-container--fixed",
+          "style": null,
+          "blocks": ["accordion-faq"],
+          "defaultContent": [".title h1", ".image.cmp-image img", ".text p"]
         }
       ]
     },
@@ -223,24 +241,31 @@
         "https://wknd.site/us/en/about-us.html",
         "https://wknd.site/ca/en/about-us.html"
       ],
-      "description": "About us page with company information, team details, and mission statement",
-      "blocks": []
-    },
-    {
-      "name": "placeholder-landing",
-      "urls": [
-        "https://wknd.site/us/es.html",
-        "https://wknd.site/ca/fr.html",
-        "https://wknd.site/ch/de.html",
-        "https://wknd.site/ch/fr.html",
-        "https://wknd.site/ch/it.html",
-        "https://wknd.site/de/de.html",
-        "https://wknd.site/fr/fr.html",
-        "https://wknd.site/es/es.html",
-        "https://wknd.site/it/it.html"
+      "description": "About us page with company information, team contributor profiles and travel guide profiles",
+      "blocks": [
+        {
+          "name": "cards-team",
+          "instances": [".experiencefragment.cmp-experience-fragment--contributor"]
+        }
       ],
-      "description": "Coming Soon placeholder landing page for non-English locale variants with hero image and language selector",
-      "blocks": []
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Our Contributors",
+          "selector": "main.container.responsivegrid.cmp-layout-container--fixed",
+          "style": null,
+          "blocks": ["cards-team"],
+          "defaultContent": [".title h1", ".title.cmp-title--underline h2", ".text.cmp-text--font-small p"]
+        },
+        {
+          "id": "section-2",
+          "name": "WKND Guides",
+          "selector": ".title.cmp-title--underline:nth-of-type(2)",
+          "style": null,
+          "blocks": ["cards-team"],
+          "defaultContent": [".title.cmp-title--underline h2", ".text.cmp-text--font-small p"]
+        }
+      ]
     }
   ]
 }

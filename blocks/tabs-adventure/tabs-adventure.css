@@ -1,0 +1,94 @@
+/* Tabs Adventure — Category-filtered adventure listing
+   Source: 6 tabs (All, Climbing, Cycling, Skiing, Surfing, Travel)
+   Cards in tab panels: 4 columns, ~260px each, 200px image height
+   Reference: docs/context.md */
+
+.tabs-adventure .tabs-adventure-list {
+  display: flex;
+  gap: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  border-bottom: 1px solid #dadada;
+}
+
+.tabs-adventure .tabs-adventure-list button {
+  flex: 0 0 max-content;
+  margin: 0;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  padding: 10px 16px;
+  background-color: transparent;
+  color: #222;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: unset;
+  text-align: initial;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.tabs-adventure .tabs-adventure-list button p {
+  margin: 0;
+}
+
+.tabs-adventure .tabs-adventure-list button[aria-selected='true'] {
+  border-bottom-color: #ffea00;
+  background-color: transparent;
+  cursor: default;
+}
+
+.tabs-adventure .tabs-adventure-list button:hover {
+  border-bottom-color: #ccc;
+}
+
+.tabs-adventure .tabs-adventure-panel {
+  margin-top: 0;
+  padding: 24px 0;
+  border: none;
+  overflow: auto;
+}
+
+.tabs-adventure .tabs-adventure-panel[aria-hidden='true'] {
+  display: none;
+}
+
+.tabs-adventure .tabs-adventure-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.tabs-adventure .tabs-adventure-panel li {
+  background: #fff;
+}
+
+.tabs-adventure .tabs-adventure-panel li img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.tabs-adventure .tabs-adventure-panel li a {
+  color: #222;
+  font-weight: 600;
+}
+
+.tabs-adventure .tabs-adventure-panel li p {
+  font-size: 14px;
+  color: #555;
+  margin: 4px 0;
+}
+
+@media (min-width: 900px) {
+  .tabs-adventure .tabs-adventure-panel ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .tabs-adventure .tabs-adventure-panel li img {
+    height: 200px;
+  }
+}

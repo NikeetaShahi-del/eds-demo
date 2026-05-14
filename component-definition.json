@@ -83,6 +83,38 @@
       "id": "blocks",
       "components": [
         {
+          "title": "Accordion Faq",
+          "id": "accordion-faq",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Accordion Faq",
+                  "filter": "accordion-faq"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Accordion Faq Item",
+          "id": "accordion-faq-item",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Accordion Faq Item",
+                  "model": "accordion-faq-item",
+                  "summary": "Lorem Ipsum",
+                  "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur volutpat consequat dui, sit amet ...</p>"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Accordion",
           "id": "accordion",
           "plugins": {
@@ -124,6 +156,36 @@
                 "template": {
                   "name": "Cards Article",
                   "filter": "cards-article"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Card",
+          "id": "card",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Card",
+                  "model": "card"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Cards Team",
+          "id": "cards-team",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Cards Team",
+                  "filter": "cards-team"
                 }
               }
             }
@@ -466,6 +528,38 @@
                   "column2text": "Column2",
                   "column3text": "Column3",
                   "column4text": "Column4"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Tabs Adventure",
+          "id": "tabs-adventure",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Tabs Adventure",
+                  "filter": "tabs-adventure"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Tabs Adventure Item",
+          "id": "tabs-adventure-item",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Tab",
+                  "model": "tabs-adventure-item",
+                  "title": "Tab Name",
+                  "content_headingType": "h3"
                 }
               }
             }

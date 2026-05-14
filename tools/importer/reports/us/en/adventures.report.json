@@ -2,7 +2,10 @@
   "status": "success",
   "url": "https://wknd.site/us/en/adventures.html",
   "path": "us/en/adventures",
-  "timestamp": "2026-05-12T08:27:28.451Z",
+  "timestamp": "2026-05-13T18:23:16.442Z",
   "title": "Adventures",
-  "template": "adventures-listing"
+  "template": "adventures-listing",
+  "blocks": [
+    "tabs-adventure"
+  ]
 }

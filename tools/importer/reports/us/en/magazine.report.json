@@ -2,7 +2,11 @@
   "status": "success",
   "url": "https://wknd.site/us/en/magazine.html",
   "path": "us/en/magazine",
-  "timestamp": "2026-05-12T08:26:21.850Z",
+  "timestamp": "2026-05-13T18:23:06.802Z",
   "title": "Magazine",
-  "template": "magazine-listing"
+  "template": "magazine-listing",
+  "blocks": [
+    "hero-featured",
+    "cards-article"
+  ]
 }
