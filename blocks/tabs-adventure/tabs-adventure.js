@@ -2,6 +2,10 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 
 let tabBlockCnt = 0;
 
+function damPathToImgSrc(damPath) {
+  return `${damPath}/_jcr_content/renditions/cq5dam.web.1280.1280.jpeg`;
+}
+
 function buildCardGrid(panel) {
   const contentDiv = panel.querySelector(':scope > div:last-child');
   if (!contentDiv) return;
@@ -26,6 +30,7 @@ function buildCardGrid(panel) {
 
     if (damLink) {
       const damPath = damLink.getAttribute('href');
+      const imgSrc = damPathToImgSrc(damPath);
       i += 1;
       const titleP = allP[i];
       const descP = allP[i + 1];
@@ -38,7 +43,7 @@ function buildCardGrid(panel) {
         const imgDiv = document.createElement('div');
         imgDiv.className = 'adventure-card-image';
         const img = document.createElement('img');
-        img.src = damPath;
+        img.src = imgSrc;
         img.alt = link.textContent;
         img.loading = 'lazy';
         imgDiv.appendChild(img);
