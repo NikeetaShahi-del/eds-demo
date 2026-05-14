@@ -9,50 +9,99 @@ function buildCardGrid(panel) {
   const h3 = contentDiv.querySelector('h3');
   if (h3) h3.remove();
 
-  const picture = contentDiv.querySelector('picture');
-  if (picture) {
-    const picParent = picture.closest('p') || picture.parentElement;
-    if (picParent && picParent !== contentDiv) picParent.remove();
+  const existingPicture = contentDiv.querySelector('picture');
+  if (existingPicture) {
+    const pp = existingPicture.closest('p') || existingPicture.parentElement;
+    if (pp && pp !== contentDiv) pp.remove();
   }
 
-  const damLink = contentDiv.querySelector('p > a[href*="/content/dam/"]');
-  if (damLink) {
-    const linkParent = damLink.closest('p');
-    if (linkParent) linkParent.remove();
-  }
+  const paragraphs = [...contentDiv.querySelectorAll(':scope > p, :scope > [data-richtext-prop] p')];
+  const allP = [...contentDiv.querySelectorAll('p')];
 
-  const paragraphs = [...contentDiv.querySelectorAll('p')];
   const cards = [];
-  for (let i = 0; i < paragraphs.length; i += 2) {
-    const titleP = paragraphs[i];
-    const descP = paragraphs[i + 1];
-    const link = titleP ? titleP.querySelector('a') : null;
-    if (link) {
+  let i = 0;
+  while (i < allP.length) {
+    const p = allP[i];
+
+    const damLink = p.querySelector('a[href*="/content/dam/"]');
+    if (damLink) {
+      const damPath = damLink.getAttribute('href');
+      i += 1;
+
+      const titleP = allP[i];
+      const descP = allP[i + 1];
+      const link = titleP ? titleP.querySelector('a') : null;
+
+      if (link) {
+        const card = document.createElement('div');
+        card.className = 'adventure-card';
+
+        const imgDiv = document.createElement('div');
+        imgDiv.className = 'adventure-card-image';
+        const img = document.createElement('img');
+        img.src = damPath;
+        img.alt = link.textContent;
+        img.loading = 'lazy';
+        imgDiv.appendChild(img);
+        card.appendChild(imgDiv);
+
+        const titleEl = document.createElement('p');
+        titleEl.className = 'adventure-card-title';
+        const a = document.createElement('a');
+        a.href = link.href;
+        a.textContent = link.textContent;
+        titleEl.appendChild(a);
+        card.appendChild(titleEl);
+
+        if (descP && !descP.querySelector('a[href*="/content/dam/"]') && !descP.querySelector('strong > a')) {
+          const descEl = document.createElement('p');
+          descEl.className = 'adventure-card-desc';
+          descEl.textContent = descP.textContent;
+          card.appendChild(descEl);
+          i += 2;
+        } else {
+          i += 1;
+        }
+
+        cards.push(card);
+      } else {
+        i += 1;
+      }
+      continue;
+    }
+
+    const titleLink = p.querySelector('strong > a');
+    if (titleLink) {
       const card = document.createElement('div');
       card.className = 'adventure-card';
 
       const titleEl = document.createElement('p');
       titleEl.className = 'adventure-card-title';
-      titleEl.textContent = link.textContent;
       const a = document.createElement('a');
-      a.href = link.href;
-      a.textContent = link.textContent;
-      titleEl.textContent = '';
+      a.href = titleLink.href;
+      a.textContent = titleLink.textContent;
       titleEl.appendChild(a);
-
       card.appendChild(titleEl);
 
-      if (descP) {
+      const descP2 = allP[i + 1];
+      if (descP2 && !descP2.querySelector('strong > a') && !descP2.querySelector('a[href*="/content/dam/"]')) {
         const descEl = document.createElement('p');
         descEl.className = 'adventure-card-desc';
-        descEl.textContent = descP.textContent;
+        descEl.textContent = descP2.textContent;
         card.appendChild(descEl);
+        i += 2;
+      } else {
+        i += 1;
       }
+
       cards.push(card);
+      continue;
     }
+
+    i += 1;
   }
 
-  paragraphs.forEach((p) => p.remove());
+  contentDiv.innerHTML = '';
 
   const grid = document.createElement('div');
   grid.className = 'adventure-card-grid';
@@ -70,13 +119,13 @@ export default async function decorate(block) {
     .filter((child) => child.firstElementChild && child.firstElementChild.children.length > 0)
     .map((child) => child.firstElementChild);
 
-  tabHeadings.forEach((tab, i) => {
-    const id = `tabpanel-${tabBlockCnt}-tab-${i + 1}`;
+  tabHeadings.forEach((tab, idx) => {
+    const id = `tabpanel-${tabBlockCnt}-tab-${idx + 1}`;
 
-    const tabpanel = block.children[i];
+    const tabpanel = block.children[idx];
     tabpanel.className = 'tabs-adventure-panel';
     tabpanel.id = id;
-    tabpanel.setAttribute('aria-hidden', !!i);
+    tabpanel.setAttribute('aria-hidden', !!idx);
     tabpanel.setAttribute('aria-labelledby', `tab-${id}`);
     tabpanel.setAttribute('role', 'tabpanel');
 
@@ -87,13 +136,13 @@ export default async function decorate(block) {
     button.id = `tab-${id}`;
     button.innerHTML = tab.innerHTML;
     button.setAttribute('aria-controls', id);
-    button.setAttribute('aria-selected', !i);
+    button.setAttribute('aria-selected', !idx);
     button.setAttribute('role', 'tab');
     button.setAttribute('type', 'button');
 
     button.addEventListener('click', () => {
-      block.querySelectorAll('[role=tabpanel]').forEach((panel) => {
-        panel.setAttribute('aria-hidden', true);
+      block.querySelectorAll('[role=tabpanel]').forEach((p2) => {
+        p2.setAttribute('aria-hidden', true);
       });
       tablist.querySelectorAll('button').forEach((btn) => {
         btn.setAttribute('aria-selected', false);

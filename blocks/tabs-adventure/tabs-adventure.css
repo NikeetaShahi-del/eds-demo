@@ -66,6 +66,18 @@
   overflow: hidden;
 }
 
+.tabs-adventure .adventure-card-image {
+  line-height: 0;
+  overflow: hidden;
+}
+
+.tabs-adventure .adventure-card-image img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
 .tabs-adventure .adventure-card-title {
   margin: 8px 0 4px;
   font-size: 13px;
