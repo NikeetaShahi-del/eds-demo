@@ -324,6 +324,14 @@ When migrating a page, include:
 
 Missing the hero image and description paragraph on the FAQs page was a mistake. Always compare against the source page section by section.
 
+### 27. About Us page: missing description paragraphs and portrait images
+
+The About Us page was migrated with only title + cards per section. Missing:
+- Italic description paragraph after each section title ("Meet the outstanding individuals..." / "Meet our extraordinary travel guides...")
+- All 7 contributor/guide portrait images were not uploaded to DAM
+
+**Fix applied:** Added text components with `<em>` wrapped descriptions. Uploaded all 7 portrait images (stacey-roswells, alex-iby-343837, ian-provo, jacob-wester, ayo-ogunseinde-237739, justin-barr, kumar-selvaraj).
+
 ### 26. Verify every page against source after pushing to AEM
 
 After pushing JCR content, always:
