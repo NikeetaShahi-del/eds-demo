@@ -54,7 +54,7 @@
   font-size: 14px;
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .cards-team > ul {
     grid-template-columns: repeat(4, 1fr);
   }

@@ -127,5 +127,15 @@
   {
     "id": "video",
     "components": []
+  },
+  {
+    "id": "feature-cards",
+    "components": [
+      "feature-card-item"
+    ]
+  },
+  {
+    "id": "feature-card-item",
+    "components": []
   }
 ]

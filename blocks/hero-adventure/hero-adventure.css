@@ -35,7 +35,7 @@
   line-height: 1.75;
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .hero-adventure > div:first-child img {
     height: 450px;
   }
