@@ -9,22 +9,28 @@
     "id": "section",
     "components": [
       "accordion",
+      "accordion-faq",
+      "author-byline",
       "button",
       "cards",
       "cards-article",
+      "cards-team",
       "carousel",
       "carousel-hero",
       "columns",
       "embed",
+      "feature-cards",
       "fragment",
       "form",
       "hero",
       "hero-adventure",
       "hero-featured",
       "image",
+      "modal",
       "quote",
       "search",
       "tabs",
+      "tabs-adventure",
       "table",
       "text",
       "title",
@@ -86,6 +92,12 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "feature-cards",
+    "components": [
+      "feature-card-item"
     ]
   },
   {
