@@ -1,0 +1,94 @@
+:root {
+  --author-byline-photo-size: 100px;
+  --author-byline-photo-size-desktop: 120px;
+  --author-byline-gap: 1.5rem;
+  --author-byline-border-color: var(--overlay-background-color);
+  --author-byline-name-color: var(--text-color);
+  --author-byline-role-color: var(--overlay-background-color);
+  --author-byline-social-color: var(--link-color);
+  --author-byline-social-gap: 0.75rem;
+}
+
+.author-byline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--author-byline-gap);
+  padding: 2rem 0;
+  border-top: 2px solid var(--author-byline-border-color);
+  margin-top: 2rem;
+}
+
+.author-byline-photo {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.author-byline-photo picture {
+  display: block;
+  line-height: 0;
+}
+
+.author-byline-photo img {
+  width: var(--author-byline-photo-size);
+  height: var(--author-byline-photo-size);
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.author-byline-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.author-byline-name {
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-s);
+  color: var(--author-byline-name-color);
+  margin: 0;
+}
+
+.author-byline-content p:not(.author-byline-social) {
+  font-size: var(--body-font-size-s);
+  color: var(--author-byline-role-color);
+  margin: 0;
+}
+
+.author-byline-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--author-byline-social-gap);
+  margin-top: 0.5rem;
+}
+
+.author-byline-social {
+  margin: 0;
+}
+
+.author-byline-social a:any-link {
+  color: var(--author-byline-social-color);
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.author-byline-social a:hover {
+  text-decoration: underline;
+}
+
+@media (width >= 900px) {
+  .author-byline {
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .author-byline-photo img {
+    width: var(--author-byline-photo-size-desktop);
+    height: var(--author-byline-photo-size-desktop);
+  }
+}

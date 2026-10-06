@@ -30,20 +30,20 @@
 
 .hero-featured h2 {
   margin-top: 0.4em;
-  font-family: Asar, Georgia, "Times New Roman", Times, serif;
-  font-size: 28px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-l);
 }
 
 .hero-featured p:first-child {
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 0.5px;
+  font-size: var(--body-font-size-xs);
+  letter-spacing: 0.05em;
   margin-bottom: 0;
 }
 
 .hero-featured a:any-link {
-  color: #222;
+  color: var(--text-color);
   font-weight: 600;
 }
 

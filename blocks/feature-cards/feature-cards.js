@@ -26,7 +26,7 @@ export default async function decorate(block) {
   cardList.className = 'feature-cards-list';
   cardList.setAttribute('role', 'list');
 
-  cards.forEach((row, index) => {
+  cards.forEach((row) => {
     const divs = Array.from(row.children);
 
     // Extract fields in model order:

@@ -36,22 +36,22 @@
 }
 
 .cards-team h3 {
-  font-family: Asar, Georgia, "Times New Roman", Times, serif;
+  font-family: var(--heading-font-family);
   margin-bottom: 4px;
 }
 
 .cards-team h5 {
   font-weight: 400;
-  color: #666;
+  color: var(--overlay-background-color);
   margin-top: 0;
 }
 
 .cards-team .cards-team-card-body a {
   display: inline-block;
   margin: 0 6px;
-  color: #222;
+  color: var(--text-color);
   text-decoration: none;
-  font-size: 14px;
+  font-size: var(--body-font-size-xs);
 }
 
 @media (width >= 900px) {
