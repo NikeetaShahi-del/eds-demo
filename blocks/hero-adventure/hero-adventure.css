@@ -26,22 +26,22 @@
 
 .hero-adventure h2 {
   margin-top: 0;
-  font-family: Asar, Georgia, "Times New Roman", Times, serif;
-  font-size: 28px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-l);
 }
 
 .hero-adventure p {
-  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+  font-family: var(--body-font-family);
   line-height: 1.75;
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .hero-adventure > div:first-child img {
     height: 450px;
   }
 
   .hero-adventure > div:last-child {
-    background: #fff;
+    background: var(--background-color);
     width: 65%;
     margin-left: 12%;
     margin-top: -120px;

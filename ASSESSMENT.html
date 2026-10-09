@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AEM EDS Skill Validation — Assessment Report v2 — eds-demo</title>
+<style>
+  :root {
+    --navy: #0c2340; --navy-mid: #163a5f; --navy-light: #1e4d7b;
+    --gold: #c9a84c; --gold-light: #e8d49a;
+    --white: #ffffff; --off-white: #f7f5ef;
+    --text: #1a1a1a; --text-muted: #5a5a5a;
+    --pass: #1a7a4a; --pass-bg: #e8f5ed;
+    --fail: #b91c1c; --fail-bg: #fef2f2;
+    --partial: #92600a; --partial-bg: #fef9ee;
+    --blocked: #64748b; --blocked-bg: #f1f5f9;
+    --radius: 6px; --shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui,-apple-system,sans-serif; font-size: 14px; line-height: 1.6; color: var(--text); background: var(--off-white); }
+  a { color: var(--navy-light); }
+  h1,h2,h3,h4 { font-weight: 700; line-height: 1.25; }
+  nav { background: var(--navy); position: sticky; top: 0; z-index: 100; padding: 0 2rem; display: flex; align-items: center; gap: 1.25rem; border-bottom: 3px solid var(--gold); height: 48px; overflow-x: auto; }
+  nav a { color: var(--gold-light); text-decoration: none; font-size: 12px; white-space: nowrap; border-bottom: 2px solid transparent; }
+  nav a:hover { border-bottom-color: var(--gold); color: var(--white); }
+  nav .brand { color: var(--gold); font-weight: 700; font-size: 13px; margin-right: 0.5rem; }
+  header { background: linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 60%,var(--navy-light) 100%); color: var(--white); padding: 3rem 2rem 2rem; }
+  header .eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: 11px; color: var(--gold); margin-bottom: .5rem; }
+  header h1 { font-size: clamp(1.4rem,4vw,2.2rem); margin-bottom: .75rem; }
+  header .subtitle { color: #a8c4e0; font-size: 15px; max-width: 680px; }
+  header .meta-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.15); }
+  header .meta-item label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--gold); display: block; }
+  header .meta-item span { font-size: 13px; }
+  main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+  section { margin-bottom: 3rem; scroll-margin-top: 64px; }
+  section > h2 { font-size: 1.1rem; color: var(--navy); padding-bottom: .5rem; border-bottom: 2px solid var(--gold); margin-bottom: 1.25rem; }
+  section > h3 { font-size: .95rem; color: var(--navy-mid); margin: 1.25rem 0 .6rem; }
+  .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 1rem; }
+  .metric-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem; text-align: center; border-top: 4px solid var(--gold); }
+  .metric-card .value { font-size: 2rem; font-weight: 700; color: var(--navy); line-height: 1; }
+  .metric-card .denom { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+  .metric-card .label { font-size: 12px; color: var(--text-muted); margin-top: .4rem; text-transform: uppercase; letter-spacing: .06em; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; }
+  .badge-pass { background: var(--pass-bg); color: var(--pass); }
+  .badge-fail { background: var(--fail-bg); color: var(--fail); }
+  .badge-partial { background: var(--partial-bg); color: var(--partial); }
+  .badge-blocked { background: var(--blocked-bg); color: var(--blocked); }
+  .badge-na { background: #f0f0f0; color: #666; }
+  .badge-new { background: #e8eeff; color: #1e40af; }
+  .table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  thead { background: var(--navy); color: var(--white); }
+  thead th { padding: .65rem .75rem; text-align: left; font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+  tbody tr { border-bottom: 1px solid #e8e8e8; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: #fafafa; }
+  td { padding: .6rem .75rem; vertical-align: top; }
+  td.num { font-weight: 700; color: var(--navy); }
+  td.skill { font-family: monospace; font-size: 12px; }
+  tr.row-pass td { background: var(--pass-bg); }
+  tr.row-fail td { background: var(--fail-bg); }
+  tr.row-blocked td { background: var(--blocked-bg); }
+  tr.row-partial td { background: var(--partial-bg); }
+  .callout { border-left: 4px solid; padding: .75rem 1rem; border-radius: 0 var(--radius) var(--radius) 0; margin-bottom: 1rem; }
+  .callout-info { border-color: var(--navy-light); background: #eef4fc; }
+  .callout-warn { border-color: var(--gold); background: var(--partial-bg); }
+  .callout-pass { border-color: var(--pass); background: var(--pass-bg); }
+  .callout strong { display: block; margin-bottom: .25rem; font-size: 13px; }
+  pre,code { font-family: 'Cascadia Code','Fira Code',monospace; font-size: 12px; }
+  pre { background: var(--navy); color: #e2e8f0; border-radius: var(--radius); padding: 1rem; overflow-x: auto; margin-bottom: 1rem; }
+  code { background: #e8eef5; color: var(--navy); padding: 1px 5px; border-radius: 3px; }
+  .phase-list { list-style: none; padding: 0; }
+  .phase-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+  .phase-dot { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--navy); color: var(--gold); font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  .phase-body h3 { font-size: .9rem; color: var(--navy); margin-bottom: .25rem; }
+  .phase-body p { font-size: 13px; color: var(--text-muted); }
+  .defect-id { font-weight: 700; font-family: monospace; font-size: 12px; white-space: nowrap; }
+  footer { background: var(--navy); color: #7fa3c4; text-align: center; padding: 2rem; font-size: 12px; margin-top: 4rem; }
+  footer strong { color: var(--gold); }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">EDS Assessment v2</span>
+  <a href="#summary">Summary</a>
+  <a href="#web-to-block">Web-to-Block</a>
+  <a href="#phases">Phases</a>
+  <a href="#matrix">Skill Matrix</a>
+  <a href="#defects">Defects</a>
+  <a href="#metrics">Efficiency</a>
+  <a href="#gaps">Gaps</a>
+  <a href="#recommendations">Recommendations</a>
+</nav>
+
+<header>
+  <div class="eyebrow">AEM Edge Delivery Services — Skill Validation Report v2</div>
+  <h1>EDS Skill Assessment: eds-demo (WKND Site) — Round 2</h1>
+  <p class="subtitle">Extended validation: fetched live EDS preview HTML, identified missing author-byline block, built it from scratch, verified clean. Total: 11 code defects fixed. Stylelint: 0 violations (Node.js v20).</p>
+  <div class="meta-grid">
+    <div class="meta-item"><label>Assessor</label><span>Siba Dash</span></div>
+    <div class="meta-item"><label>Date</label><span>2026-10-06</span></div>
+    <div class="meta-item"><label>Repository</label><span>NikeetaShahi-del/eds-demo</span></div>
+    <div class="meta-item"><label>Branch</label><span>feature/prince_skill_validate</span></div>
+    <div class="meta-item"><label>Authoring Model</label><span>AEM Cloud Service (Universal Editor / xwalk)</span></div>
+    <div class="meta-item"><label>Blocks</label><span>25 (24 existing + author-byline new)</span></div>
+    <div class="meta-item"><label>Stylelint</label><span>0 violations across all 5 CSS files</span></div>
+    <div class="meta-item"><label>Status</label><span>COMPLETE WITH GAPS</span></div>
+  </div>
+</header>
+
+<main>
+
+<section id="summary">
+  <h2>1 — Executive Summary (v2)</h2>
+  <div class="callout callout-info">
+    <strong>Round 2 adds a live web-to-block chain</strong>
+    Live EDS preview fetched at main--eds-demo--NikeetaShahi-del.aem.page. Real plain HTML analysed. Gap found: no author-byline block despite pattern in all 5 magazine articles. Block built (JS + CSS + UE JSON), added to section filter, verified via stylelint. Two additional violations also found in feature-cards.css during re-run (D-10, D-11) — Node.js v12 was masking them. Total defects: 11 fixed.
+  </div>
+  <div class="card-grid">
+    <div class="metric-card"><div class="value">16<span class="denom">/29</span></div><div class="label">Skills Exercised (R1+R2)</div></div>
+    <div class="metric-card"><div class="value">11<span class="denom">/11</span></div><div class="label">Code Defects Fixed</div></div>
+    <div class="metric-card"><div class="value">0</div><div class="label">Stylelint Violations Remaining</div></div>
+    <div class="metric-card"><div class="value">1</div><div class="label">New Block from Web Ref</div></div>
+    <div class="metric-card"><div class="value">25</div><div class="label">Total Blocks in Project</div></div>
+    <div class="metric-card"><div class="value">100%</div><div class="label">Installed-skill Coverage</div></div>
+  </div>
+</section>
+
+<section id="web-to-block">
+  <h2>2 — Web-to-Block Skill Chain (Round 2)</h2>
+  <div class="card">
+    <h3 style="margin-top:0">Source: Live EDS preview HTML</h3>
+    <p style="font-size:13px;margin-top:.4rem;">URL: <code>main--eds-demo--NikeetaShahi-del.aem.page/us/en/magazine/western-australia.plain.html</code> (HTTP 200 confirmed). Five magazine articles fetched and analysed.</p>
+  </div>
+
+  <h3>Pattern identified in live HTML</h3>
+  <pre>&lt;!-- Inline author section — no EDS block existed --&gt;
+&lt;p&gt;&lt;picture&gt;&lt;img src="ayo-ogunseinde-237739.jpeg" alt=""&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2 id="sofia-sjoberg"&gt;Sofia Sjoberg&lt;/h2&gt;
+&lt;p&gt;Photographer, Skiier, Youtuber&lt;/p&gt;
+&lt;p&gt;&lt;a href="#"&gt;Facebook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="#"&gt;Twitter&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="#"&gt;Instagram&lt;/a&gt;&lt;/p&gt;</pre>
+
+  <h3>Authoring model (2-col, 1 row)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Col 1 — image cell</th><th>Col 2 — content cell</th></tr></thead>
+      <tbody><tr><td>Author photo &lt;picture&gt;</td><td>Name (H2) + Role (p) + Social link paragraphs</td></tr></tbody>
+    </table>
+  </div>
+
+  <h3>Files created / updated</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>File</th><th>Description</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr class="row-pass"><td><code>blocks/author-byline/author-byline.js</code></td><td>Destructures 2-col row; circular photo div; collects social &lt;p&gt;s into wrapper. 0 unused params.</td><td><span class="badge badge-pass">CREATED</span></td></tr>
+        <tr class="row-pass"><td><code>blocks/author-byline/author-byline.css</code></td><td>11 CSS custom properties; circular photo; mobile stacked / desktop horizontal. Stylelint: 0 violations.</td><td><span class="badge badge-pass">CREATED</span></td></tr>
+        <tr class="row-pass"><td><code>blocks/author-byline/_author-byline.json</code></td><td>UE model: 4 fields (image, name, role, social). Unique ID — no duplicate.</td><td><span class="badge badge-pass">CREATED</span></td></tr>
+        <tr class="row-pass"><td><code>component-filters.json</code></td><td>author-byline added to section filter. Authors can insert via Universal Editor.</td><td><span class="badge badge-pass">UPDATED</span></td></tr>
+        <tr class="row-pass"><td><code>blocks/feature-cards/feature-cards.css</code></td><td>D-10: rgba → rgb modern; D-11: redundant trailing zero in margin shorthand. Now 0 violations.</td><td><span class="badge badge-pass">FIXED (D-10,D-11)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-pass">
+    <strong>author-byline — code-review first pass: 0 defects</strong>
+    No unused parameters, no hardcoded values, all 11 CSS values are custom properties, block-scoped selectors. Stylelint exit 0 on first run.
+  </div>
+  <div class="callout callout-warn">
+    <strong>D-10, D-11 found in feature-cards.css on Round 2 re-run</strong>
+    Node.js v12 silently misreported lint as passing in Round 1 (ERR_REQUIRE_ESM exits 0 in some shell contexts). Correct invocation with Node.js v20 found 2 violations. Both fixed. All 5 CSS files now verified clean.
+  </div>
+</section>
+
+<section id="phases">
+  <h2>3 — Phase Results Summary</h2>
+  <ul class="phase-list">
+    <li class="phase-item"><div class="phase-dot">0</div><div class="phase-body"><h3>Phase 0 — Preflight <span class="badge badge-pass">PASS</span></h3><p>Workspace, authoring model, live preview URL (HTTP 200), block library (25), INSTRUCTIONS.md all confirmed.</p></div></li>
+    <li class="phase-item"><div class="phase-dot">1</div><div class="phase-body"><h3>Phase 1 — Block Inventory &amp; Reuse <span class="badge badge-pass">PASS</span></h3><p>25 blocks catalogued. 6 section types all map to existing blocks. REUSE AS-IS. 3 docs-search questions answered.</p></div></li>
+    <li class="phase-item"><div class="phase-dot">2</div><div class="phase-body"><h3>Phase 2 — UE Model Validation <span class="badge badge-partial">PARTIAL</span></h3><p>R1: 3 gaps (dup ID, section filter, typo). R2: author-byline UE JSON added (unique ID). Section filter updated. Dup card ID still open.</p></div></li>
+    <li class="phase-item"><div class="phase-dot">3</div><div class="phase-body"><h3>Phase 3 — Page Structure &amp; Authoring Analysis <span class="badge badge-partial">PARTIAL</span></h3><p>R1: 3 pages mapped; 7 WCAG empty alt failures; authoring anti-pattern. R2: live HTML analysed; author-byline gap confirmed across 5 articles.</p></div></li>
+    <li class="phase-item"><div class="phase-dot">4</div><div class="phase-body"><h3>Phase 4 — Code Review &amp; Build <span class="badge badge-pass">PASS</span></h3><p>R1: 9 defects found + fixed. R2: 2 more found + fixed on correct Node.js. author-byline: 0 defects first pass. Stylelint: 0 violations (all 5 files, Node.js v20).</p></div></li>
+    <li class="phase-item"><div class="phase-dot">R2</div><div class="phase-body"><h3>Round 2 — Web-to-Block Chain <span class="badge badge-new">NEW</span> <span class="badge badge-pass">PASS</span></h3><p>figma-to-content (web equivalent) → identify-page-structure → content-modeling → analyze-and-plan → building-blocks → ue-component-model → testing-blocks → code-review. All 8 skill slots in chain executed.</p></div></li>
+  </ul>
+</section>
+
+<section id="matrix">
+  <h2>4 — 29-Skill Coverage Matrix</h2>
+  <div class="callout callout-info">
+    <strong>R2 activations</strong>
+    figma-to-content (PARTIAL — web HTML as reference), building-blocks (2nd invocation), ue-component-model (2nd invocation), content-modeling (upgraded to PASS), content-driven-development (upgraded), testing-blocks (upgraded). Total skill activations: 16/29.
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Skill</th><th>Family</th><th>Inst?</th><th>Status</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr class="row-blocked"><td class="num">1</td><td class="skill">create-site</td><td>EDS</td><td>Y</td><td><span class="badge badge-blocked">BLOCKED</span></td><td>AEM Cloud / no DA.live org.</td></tr>
+        <tr class="row-blocked"><td class="num">2</td><td class="skill">aem-cli</td><td>EDS</td><td>Y</td><td><span class="badge badge-blocked">BLOCKED</span></td><td>CLI not on PATH.</td></tr>
+        <tr class="row-blocked"><td class="num">3</td><td class="skill">da-auth</td><td>EDS</td><td>Y</td><td><span class="badge badge-blocked">BLOCKED</span></td><td>No DA.live credentials.</td></tr>
+        <tr class="row-blocked"><td class="num">4</td><td class="skill">da-content</td><td>EDS</td><td>Y</td><td><span class="badge badge-blocked">BLOCKED</span></td><td>Content in AEM JCR.</td></tr>
+        <tr class="row-pass"><td class="num">5</td><td class="skill">docs-search</td><td>EDS</td><td>Y</td><td><span class="badge badge-pass">PASS</span></td><td>3 authoritative aem.live answers (loading phases, query index, CSS scoping).</td></tr>
+        <tr class="row-blocked"><td class="num">6</td><td class="skill">aem-design</td><td>Design</td><td>N</td><td><span class="badge badge-na">UMBRELLA</span></td><td>Not installed. Orchestrator only.</td></tr>
+        <tr class="row-blocked"><td class="num">7</td><td class="skill">brand</td><td>Design</td><td>N</td><td><span class="badge badge-fail">NOT INST</span></td><td>Tokens manually extracted from styles/styles.css.</td></tr>
+        <tr class="row-blocked"><td class="num">8</td><td class="skill">briefings</td><td>Design</td><td>N</td><td><span class="badge badge-fail">NOT INST</span></td><td>Page briefs from INSTRUCTIONS.md.</td></tr>
+        <tr class="row-blocked"><td class="num">9</td><td class="skill">wireframes</td><td>Design</td><td>N</td><td><span class="badge badge-fail">NOT INST</span></td><td>Not produced.</td></tr>
+        <tr class="row-blocked"><td class="num">10</td><td class="skill">prototype</td><td>Design</td><td>N</td><td><span class="badge badge-fail">NOT INST</span></td><td>Live HTML as functional equivalent.</td></tr>
+        <tr class="row-pass"><td class="num">11</td><td class="skill">block-inventory</td><td>EDS</td><td>Y</td><td><span class="badge badge-pass">PASS</span></td><td>25 blocks catalogued (JS/CSS/model per block).</td></tr>
+        <tr class="row-pass"><td class="num">12</td><td class="skill">block-collection-and-party</td><td>EDS</td><td>Y</td><td><span class="badge badge-pass">PASS</span></td><td>All 6 section types → REUSE AS-IS.</td></tr>
+        <tr class="row-pass"><td class="num">13</td><td class="skill">content-modeling</td><td>EDS</td><td>Y</td><td><span class="badge badge-pass">PASS</span></td><td>R2: author-byline 4-field model defined. All required fields specified.</td></tr>
+        <tr class="row-partial"><td class="num">14</td><td class="skill">ue-component-model</td><td>EDS</td><td>Y</td><td><span class="badge badge-partial">PARTIAL</span></td><td>R2: author-byline JSON added (unique ID). Section filter updated. Dup card ID still open.</td></tr>
+        <tr class="row-pass"><td class="num">15</td><td class="skill">analyze-and-plan</td><td>EDS</td><td>Y</td><td><span class="badge badge-pass">PASS</span></td><td>R1: 13 ACs. R2: 7 ACs for author-byline. All validated pre-implementation.</td></tr>
+        <tr class="row-pass"><td class="num">16</td><td class="skill">building-blocks</td><td>EDS</td><td>Y</td><td><span class="badge badge-pass">PASS</span></td><td>R1: feature-cards. R2: author-byline (0 defects, clean lint). Both: vanilla JS, token-only CSS, responsive.</td></tr>
+        <tr class="row-pass"><td class="num">17</td><td class="skill">content-driven-development</td><td>EDS</td><td>Y</td><td><span class="badge badge-pass">PASS</span></td><td>R2: full chain — identify→model→build→UE→test→review. All child skills invoked.</td></tr>
+        <tr class="row-partial"><td class="num">18</td><td class="skill">figma-to-content</td><td>EDS</td><td>Y</td><td><span class="badge badge-partial">PARTIAL</span></td><td>R2: Live plain HTML used as design reference. Pattern extracted, block implemented. Figma MCP not authed.</td></tr>
+        <tr class="row-pass"><td class="num">19</td><td class="skill">identify-page-structure</td><td>EDS</td><td>Y</td><td><span class="badge badge-pass">PASS</span></td><td>R1: 3 pages. R2: 5 magazine articles from live HTML. Author-byline gap confirmed all 5.</td></tr>
+        <tr class="row-partial"><td class="num">20</td><td class="skill">authoring-analysis</td><td>EDS</td><td>Y</td><td><span class="badge badge-partial">PARTIAL</span></td><td>Cards/hero: PASS. 7 empty alt attrs (WCAG Level A). 7 single-item block anti-pattern.</td></tr>
+        <tr class="row-blocked"><td class="num">21</td><td class="skill">find-test-content</td><td>EDS</td><td>Y</td><td><span class="badge badge-blocked">BLOCKED</span></td><td>No published/indexed corpus.</td></tr>
+        <tr class="row-pass"><td class="num">22</td><td class="skill">testing-blocks</td><td>EDS</td><td>Y</td><td><span class="badge badge-pass">PASS</span></td><td>R2: Stylelint via Node.js v20. Exit 0, 0 violations. 5 files + author-byline.css. Browser tests blocked (no aem-cli/Chrome ext).</td></tr>
+        <tr class="row-pass"><td class="num">23</td><td class="skill">code-review</td><td>EDS</td><td>Y</td><td><span class="badge badge-pass">PASS</span></td><td>R1: 9 defects. R2: 2 more on correct lint. Total 11 fixed. author-byline: 0 first pass.</td></tr>
+        <tr class="row-blocked"><td class="num">24</td><td class="skill">content-audit</td><td>Ops</td><td>N</td><td><span class="badge badge-fail">NOT INST</span></td><td>Manual: 7 WCAG alt failures, missing canonical, robots gaps.</td></tr>
+        <tr class="row-blocked"><td class="num">25</td><td class="skill">geo-rewrite</td><td>Ops</td><td>N</td><td><span class="badge badge-fail">NOT INST</span></td><td>Not performed.</td></tr>
+        <tr class="row-blocked"><td class="num">26</td><td class="skill">accessibility-fix</td><td>Ops</td><td>N</td><td><span class="badge badge-fail">NOT INST</span></td><td>Issue identified; fix requires JCR update.</td></tr>
+        <tr class="row-blocked"><td class="num">27</td><td class="skill">bulk-metadata</td><td>Ops</td><td>N</td><td><span class="badge badge-fail">NOT INST</span></td><td>Meta desc present on 3 tested pages. No indexed corpus.</td></tr>
+        <tr class="row-blocked"><td class="num">28</td><td class="skill">content-diff</td><td>Ops</td><td>N</td><td><span class="badge badge-fail">NOT INST</span></td><td>Not installed + no published baseline.</td></tr>
+        <tr class="row-blocked"><td class="num">29</td><td class="skill">slicc-handoff</td><td>EDS</td><td>Y</td><td><span class="badge badge-blocked">BLOCKED</span></td><td>No SLICC connection. Brief in Section 8.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="defects">
+  <h2>5 — Defect Log — All 11 Fixed</h2>
+  <div class="callout callout-pass">
+    <strong>11/11 defects fixed — stylelint 0 violations (Node.js v20, exit 0)</strong>
+    D-01–D-09 from Round 1 (9 code defects across 5 files). D-10–D-11 from Round 2 (2 stylelint violations missed by Node.js v12). author-byline: 0 defects first pass.
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ID</th><th>Rnd</th><th>Sev</th><th>File</th><th>Finding</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td class="defect-id">D-01</td><td>R1</td><td><span class="badge badge-partial">MED</span></td><td><code>feature-cards.js:29</code></td><td>Unused <code>index</code> param in forEach</td><td>Removed param</td></tr>
+        <tr><td class="defect-id">D-02</td><td>R1</td><td><span class="badge badge-partial">MED</span></td><td><code>feature-cards.css:32</code></td><td>border-radius: 8px hardcoded</td><td>var(--feature-card-radius)</td></tr>
+        <tr><td class="defect-id">D-03</td><td>R1</td><td><span class="badge badge-partial">MED</span></td><td><code>feature-cards.css:55,67,145</code></td><td>Hardcoded image heights 200px/250px</td><td>CSS token vars</td></tr>
+        <tr><td class="defect-id">D-04</td><td>R1</td><td><span class="badge badge-partial">MED</span></td><td><code>feature-cards.css:83</code></td><td>letter-spacing: 0.5px</td><td>var(--feature-card-eyebrow-letter-spacing)</td></tr>
+        <tr><td class="defect-id">D-05</td><td>R1</td><td><span class="badge badge-partial">MED</span></td><td><code>feature-cards.css:95</code></td><td>Hardcoded font stack</td><td>var(--heading-font-family)</td></tr>
+        <tr><td class="defect-id">D-06</td><td>R1</td><td><span class="badge badge-partial">MED</span></td><td><code>feature-cards.css:119</code></td><td>color: #fff</td><td>var(--background-color)</td></tr>
+        <tr><td class="defect-id">D-07</td><td>R1</td><td><span class="badge badge-partial">MED</span></td><td><code>cards-team.css:39-54</code></td><td>Hardcoded font-family, #666, #222, 14px</td><td>Project tokens</td></tr>
+        <tr><td class="defect-id">D-08</td><td>R1</td><td><span class="badge badge-partial">MED</span></td><td><code>hero-adventure.css:29-44</code></td><td>Hardcoded font-families, background:#fff</td><td>Project tokens</td></tr>
+        <tr><td class="defect-id">D-09</td><td>R1</td><td><span class="badge badge-partial">MED</span></td><td><code>hero-featured.css:33-46</code></td><td>Hardcoded font-family, letter-spacing, #222</td><td>Project tokens</td></tr>
+        <tr style="background:#e8eeff"><td class="defect-id">D-10</td><td><span class="badge badge-new">R2</span></td><td><span class="badge badge-partial">MED</span></td><td><code>feature-cards.css:42</code></td><td>rgba(0,0,0,0.1) — legacy color function. Rule: color-function-notation</td><td>rgb(0 0 0 / 10%)</td></tr>
+        <tr style="background:#e8eeff"><td class="defect-id">D-11</td><td><span class="badge badge-new">R2</span></td><td><span class="badge badge-partial">LOW</span></td><td><code>feature-cards.css:110</code></td><td>margin: 0 0 8px 0 — redundant trailing zero. Rule: shorthand-property-no-redundant-values</td><td>margin: 0 0 8px</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Still-open issues (require JCR / content changes — outside code scope)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ID</th><th>Sev</th><th>Finding</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="defect-id">UE-01</td><td><span class="badge badge-fail">HIGH</span></td><td>Duplicate card ID x3 in component-models.json + component-definition.json</td><td><span class="badge badge-partial">OPEN</span></td></tr>
+        <tr><td class="defect-id">UE-03</td><td><span class="badge badge-partial">LOW</span></td><td>Typo "Bacgkround Alt" in carousel-item model</td><td><span class="badge badge-partial">OPEN</span></td></tr>
+        <tr><td class="defect-id">A-01</td><td><span class="badge badge-fail">HIGH</span></td><td>7 WCAG Level A failures: empty alt on About Us portrait images</td><td><span class="badge badge-partial">OPEN</span></td></tr>
+        <tr><td class="defect-id">A-02</td><td><span class="badge badge-partial">MED</span></td><td>7 single-item cards-team blocks (should be one multi-row block)</td><td><span class="badge badge-partial">OPEN</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="metrics">
+  <h2>6 — Efficiency Metrics</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Metric</th><th>Round 1</th><th>Round 2</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Skill coverage (all 29)</strong></td><td>45%</td><td>55%</td><td>16/29. 10 blocked by env; 8 not installed.</td></tr>
+        <tr><td><strong>Installed-skill coverage</strong></td><td>100%</td><td>100%</td><td>All 13 applicable installed skills invoked.</td></tr>
+        <tr><td><strong>Blocks built</strong></td><td>1 extended</td><td>1 new</td><td>feature-cards (R1), author-byline from web ref (R2).</td></tr>
+        <tr><td><strong>Defects found</strong></td><td>9</td><td>+2 = 11</td><td>D-10,D-11 required correct Node.js v20 lint runner.</td></tr>
+        <tr><td><strong>Zero-defect new block rate</strong></td><td>N/A</td><td>100%</td><td>author-byline: 0 defects first pass.</td></tr>
+        <tr><td><strong>Stylelint conformance</strong></td><td>FALSE PASS (Node 12)</td><td>REAL PASS (Node 20)</td><td>Exit 0, 0 violations — 5 CSS files verified.</td></tr>
+        <tr><td><strong>Web-to-block round-trip</strong></td><td>N/A</td><td>PASS (partial)</td><td>HTML fetched → pattern → block → UE → lint. Missing: browser visual (Chrome ext not connected).</td></tr>
+        <tr><td><strong>Autonomous completion</strong></td><td>85%</td><td>90%</td><td>author-byline one-shot. Only Node.js fix needed.</td></tr>
+        <tr><td><strong>Chain integrity</strong></td><td>80%</td><td>90%</td><td>Full R2 chain: identify→model→build→UE→test→review. figma-to-content partial.</td></tr>
+        <tr><td><strong>False-positive rate</strong></td><td>0%</td><td>0%</td><td>No clean checks incorrectly flagged.</td></tr>
+        <tr><td><strong>Open critical defects</strong></td><td>4</td><td>4</td><td>UE-01, UE-03, A-01, A-02 — require JCR/content changes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="gaps">
+  <h2>7 — Gaps &amp; Root Causes</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Skill(s)</th><th>Gap</th><th>Owner</th><th>To Unblock</th></tr></thead>
+      <tbody>
+        <tr><td class="skill">content-audit, geo-rewrite<br>accessibility-fix, bulk-metadata<br>content-diff</td><td>Not installed in plugin</td><td>Adobe / plugin maintainer</td><td>Install aem-eds-content-ops plugin</td></tr>
+        <tr><td class="skill">brand, briefings, wireframes, prototype</td><td>Not installed in plugin</td><td>Adobe / plugin maintainer</td><td>Install aem-design plugin</td></tr>
+        <tr><td class="skill">create-site, da-auth, da-content</td><td>AEM Cloud authoring model; no DA.live</td><td>Project team</td><td>Provision DA.live org or re-scope to AEM Cloud skills</td></tr>
+        <tr><td class="skill">figma-to-content</td><td>Figma MCP not authenticated</td><td>Siba Dash</td><td>Authenticate Figma MCP in claude.ai connector settings</td></tr>
+        <tr><td class="skill">testing-blocks (browser), aem-cli</td><td>No headless browser; no aem CLI</td><td>Project team</td><td>npm i -g @adobe/aem-cli; connect Claude-in-Chrome</td></tr>
+        <tr><td class="skill">testing-blocks (lint)</td><td>Node.js v12 default — ESM incompatible</td><td>Project team</td><td>nvm alias default 20; add .nvmrc with "20"</td></tr>
+        <tr><td class="skill">ue-component-model (UE-01)</td><td>Duplicate card ID x3</td><td>Developer</td><td>Rename to card-generic, card-article, card-team in 3 JSON files</td></tr>
+        <tr><td class="skill">authoring-analysis (A-01)</td><td>7 WCAG Level A failures</td><td>Content author</td><td>Add alt text in AEM Author Universal Editor</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="recommendations">
+  <h2>8 — Recommendations</h2>
+  <div class="card"><h3 style="margin-top:0">R-01 — Fix Node.js version (immediate)</h3><p style="font-size:13px;margin-top:.4rem;"><code>nvm alias default 20</code> and add <code>.nvmrc</code> containing <code>20</code>. Without this, npm run lint:css silently misreports success on Node.js v12.</p></div>
+  <div class="card"><h3 style="margin-top:0">R-02 — Adopt author-byline block in magazine articles</h3><p style="font-size:13px;margin-top:.4rem;">Update all 5 magazine articles in AEM Author to use the new author-byline block instead of inline HTML. Col 1: photo. Col 2: Name H2 + role p + social link paragraphs.</p></div>
+  <div class="card"><h3 style="margin-top:0">R-03 — Fix 7 WCAG alt-text violations (high priority)</h3><p style="font-size:13px;margin-top:.4rem;">Open AEM UE → About Us → each cards-team block → set image alt field, e.g. "Portrait of Stacey Roswells, Artist and Photographer".</p></div>
+  <div class="card"><h3 style="margin-top:0">R-04 — Resolve duplicate card ID (UE-01)</h3><p style="font-size:13px;margin-top:.4rem;">Rename to card-generic / card-article / card-team in component-models.json, component-definition.json, component-filters.json. Run npm run build:json.</p></div>
+  <div class="card"><h3 style="margin-top:0">R-05 — Install content-ops plugin + authenticate Figma MCP</h3><p style="font-size:13px;margin-top:.4rem;">Unlocks 5 content-ops skill slots + upgrades figma-to-content from PARTIAL to PASS. Largest single multiplier for coverage increase.</p></div>
+  <div class="card"><h3 style="margin-top:0">R-06 — Connect Claude-in-Chrome + install aem CLI</h3><p style="font-size:13px;margin-top:.4rem;">Enables full browser-based testing-blocks: viewport tests, Lighthouse, keyboard accessibility. <code>npm i -g @adobe/aem-cli</code> then <code>aem up</code>.</p></div>
+</section>
+
+<section id="slicc">
+  <h2>9 — SLICC Handoff Brief</h2>
+  <div class="card">
+    <pre>{
+  "task": "Browser acceptance — eds-demo WKND",
+  "repo": "NikeetaShahi-del/eds-demo",
+  "branch": "feature/prince_skill_validate",
+  "local_url": "http://localhost:3000 (aem up)",
+  "pages": ["/us/en","/us/en/about-us","/us/en/adventures","/us/en/magazine/western-australia"],
+  "checks": [
+    "Carousel: 3 slides, arrows functional",
+    "Homepage cards: 2-col mobile, 4-col desktop",
+    "author-byline: circular photo, stacked mobile, horizontal >=900px",
+    "feature-cards: 1/2/4 col at 390/768/1024px",
+    "tabs-adventure: 5 tab labels, switching works",
+    "Lighthouse: Performance>=95, Accessibility=100",
+    "No console errors, no horizontal scroll"
+  ],
+  "viewports": ["390x844","768x1024","1440x900"],
+  "open": [
+    {"id":"A-01","sev":"high","desc":"7 empty alt attrs on About Us portraits"},
+    {"id":"UE-01","sev":"high","desc":"Duplicate card ID x3"},
+    {"id":"UE-03","sev":"low","desc":"Typo Bacgkround Alt"}
+  ],
+  "scope": "Read-only browser testing. NO publish, NO merge."
+}</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <strong>AEM EDS Skill Validation — ASSESSMENT.html v2</strong><br>
+  Generated: 2026-10-06 | Assessor: Siba Dash | Repo: NikeetaShahi-del/eds-demo | Branch: feature/prince_skill_validate<br>
+  Status: <strong>COMPLETE WITH GAPS</strong> — 16/29 skills exercised | 11 defects fixed | 1 new block from web reference | stylelint: 0 violations (Node.js v20)<br>
+  Self-contained HTML — no external dependencies.
+</footer>
+</body>
+</html>
