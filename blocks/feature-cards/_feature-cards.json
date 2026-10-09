@@ -49,27 +49,15 @@
           "label": "Eyebrow Label"
         },
         {
-          "component": "text",
-          "valueType": "string",
-          "name": "title",
-          "label": "Title"
-        },
-        {
           "component": "richtext",
           "valueType": "string",
-          "name": "description",
-          "label": "Description"
+          "name": "text",
+          "label": "Title &amp; Description"
         },
         {
-          "component": "text",
+          "component": "aem-content",
           "valueType": "string",
-          "name": "cta",
-          "label": "CTA Label"
-        },
-        {
-          "component": "text",
-          "valueType": "string",
-          "name": "ctaLink",
+          "name": "link",
           "label": "CTA Link"
         }
       ]

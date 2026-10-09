@@ -1,7 +1,7 @@
 /*
  * Feature Cards Block
  *
- * Purpose: Display a grid of feature cards with image, eyebrow, title, description, and optional CTA
+ * Purpose: Display a grid of feature cards with image, eyebrow, title, description, and CTA
  * Layout: Responsive 1/2/4 columns based on viewport width
  * Standards: Vanilla JS, CSS custom properties, WCAG 2.1 AA, Lighthouse ≥95
  *
@@ -103,4 +103,3 @@ export default async function decorate(block) {
 
   block.appendChild(cardList);
 }
-
